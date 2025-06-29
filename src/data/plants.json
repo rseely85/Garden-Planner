@@ -1,0 +1,162 @@
+[
+  {
+    "plant": "Tomato",
+    "icon": "\ud83c\udf45",
+    "spacing": 12,
+    "zone": "Warm",
+    "light": "Full Sun",
+    "soil": "Loamy"
+  },
+  {
+    "plant": "Carrot",
+    "icon": "\ud83e\udd55",
+    "spacing": 3,
+    "zone": "Cool",
+    "light": "Full Sun",
+    "soil": "Sandy"
+  },
+  {
+    "plant": "Lettuce",
+    "icon": "\ud83e\udd6c",
+    "spacing": 6,
+    "zone": "Cool",
+    "light": "Partial Shade",
+    "soil": "Loamy"
+  },
+  {
+    "plant": "Pepper",
+    "icon": "\ud83c\udf36\ufe0f",
+    "spacing": 12,
+    "zone": "Warm",
+    "light": "Full Sun",
+    "soil": "Well-drained"
+  },
+  {
+    "plant": "Corn",
+    "icon": "\ud83c\udf3d",
+    "spacing": 15,
+    "zone": "Warm",
+    "light": "Full Sun",
+    "soil": "Loamy"
+  },
+  {
+    "plant": "Pumpkin",
+    "icon": "\ud83c\udf83",
+    "spacing": 36,
+    "zone": "Warm",
+    "light": "Full Sun",
+    "soil": "Rich"
+  },
+  {
+    "plant": "Onion",
+    "icon": "\ud83e\uddc5",
+    "spacing": 4,
+    "zone": "Cool",
+    "light": "Full Sun",
+    "soil": "Well-drained"
+  },
+  {
+    "plant": "Garlic",
+    "icon": "\ud83e\uddc4",
+    "spacing": 4,
+    "zone": "Cool",
+    "light": "Full Sun",
+    "soil": "Sandy"
+  },
+  {
+    "plant": "Cabbage",
+    "icon": "\ud83e\udd66",
+    "spacing": 18,
+    "zone": "Cool",
+    "light": "Full Sun",
+    "soil": "Rich"
+  },
+  {
+    "plant": "Potato",
+    "icon": "\ud83e\udd54",
+    "spacing": 12,
+    "zone": "Cool",
+    "light": "Full Sun",
+    "soil": "Loamy"
+  },
+  {
+    "plant": "Zucchini",
+    "icon": "\ud83e\udd52",
+    "spacing": 24,
+    "zone": "Warm",
+    "light": "Full Sun",
+    "soil": "Rich"
+  },
+  {
+    "plant": "Strawberry",
+    "icon": "\ud83c\udf53",
+    "spacing": 12,
+    "zone": "Cool",
+    "light": "Full Sun",
+    "soil": "Loamy"
+  },
+  {
+    "plant": "Beet",
+    "icon": "\ud83e\uded2",
+    "spacing": 3,
+    "zone": "Cool",
+    "light": "Partial Shade",
+    "soil": "Sandy"
+  },
+  {
+    "plant": "Broccoli",
+    "icon": "\ud83e\udd66",
+    "spacing": 18,
+    "zone": "Cool",
+    "light": "Full Sun",
+    "soil": "Rich"
+  },
+  {
+    "plant": "Spinach",
+    "icon": "\ud83c\udf3f",
+    "spacing": 6,
+    "zone": "Cool",
+    "light": "Partial Shade",
+    "soil": "Loamy"
+  },
+  {
+    "plant": "Radish",
+    "icon": "\ud83c\udf31",
+    "spacing": 2,
+    "zone": "Cool",
+    "light": "Full Sun",
+    "soil": "Sandy"
+  },
+  {
+    "plant": "Pea",
+    "icon": "\ud83c\udf3f",
+    "spacing": 2,
+    "zone": "Cool",
+    "light": "Full Sun",
+    "soil": "Loamy"
+  },
+  {
+    "plant": "Cucumber",
+    "icon": "\ud83e\udd52",
+    "spacing": 12,
+    "zone": "Warm",
+    "light": "Full Sun",
+    "soil": "Rich"
+  },
+  {
+    "plant": "Placeholder",
+    "icon": "",
+    "spacing": 0,
+    "zone": "Any",
+    "light": "Any",
+    "soil": "Any"
+  },
+  {
+    "plant": "Clear",
+    "icon": "",
+    "spacing": 0,
+    "zone": "Any",
+    "light": "Any",
+    "soil": "Any"
+  }
+]
