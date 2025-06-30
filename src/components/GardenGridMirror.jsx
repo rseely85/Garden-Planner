@@ -1,33 +1,40 @@
 import React from "react";
 
-export default function GardenGridMirror({ mirrorRows }) {
+export default function GardenGridMirror() {
+  const hardCodedRows = [
+    { row: 0, col: 0, crop: "TestCrop", icon: "🌱" },
+    { row: 0, col: 1, crop: "TestCrop", icon: "🌱" },
+    { row: 1, col: 0, crop: "TestCrop", icon: "🌱" },
+    { row: 1, col: 1, crop: "TestCrop", icon: "🌱" },
+  ];
+
   return (
     <div
       style={{
         border: "4px solid green",
-        backgroundColor: "#eee",
+        padding: 10,
         width: 800,
         height: 500,
         overflow: "auto",
-        padding: 10,
+        backgroundColor: "#eee",
       }}
     >
       <table style={{ width: "100%", borderCollapse: "collapse" }}>
         <thead>
           <tr>
-            <th style={{ textAlign: "left", borderBottom: "2px solid black" }}>Row</th>
-            <th style={{ textAlign: "left", borderBottom: "2px solid black" }}>Col</th>
-            <th style={{ textAlign: "left", borderBottom: "2px solid black" }}>Crop</th>
-            <th style={{ textAlign: "left", borderBottom: "2px solid black" }}>Icon</th>
+            <th style={{ border: "1px solid #ccc" }}>Row</th>
+            <th style={{ border: "1px solid #ccc" }}>Col</th>
+            <th style={{ border: "1px solid #ccc" }}>Crop</th>
+            <th style={{ border: "1px solid #ccc" }}>Icon</th>
           </tr>
         </thead>
         <tbody>
-          {mirrorRows.map((row, idx) => (
+          {hardCodedRows.map((entry, idx) => (
             <tr key={idx}>
-              <td>{row.row}</td>
-              <td>{row.col}</td>
-              <td>{row.crop}</td>
-              <td>{row.icon}</td>
+              <td style={{ border: "1px solid #ccc", textAlign: "center" }}>{entry.row}</td>
+              <td style={{ border: "1px solid #ccc", textAlign: "center" }}>{entry.col}</td>
+              <td style={{ border: "1px solid #ccc", textAlign: "center" }}>{entry.crop}</td>
+              <td style={{ border: "1px solid #ccc", textAlign: "center" }}>{entry.icon}</td>
             </tr>
           ))}
         </tbody>
