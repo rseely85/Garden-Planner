@@ -4,30 +4,37 @@ export default function GardenGridMirror({ mirrorRows }) {
   return (
     <div
       style={{
-        backgroundColor: "#f5f5f5",
         padding: 10,
         border: "4px solid green",
         width: 800,
         height: 500,
-        overflow: "auto"
+        overflow: "auto",
+        backgroundColor: "white"
       }}
     >
-      <table style={{ width: "100%", borderCollapse: "collapse" }}>
+      <table
+        style={{
+          width: "100%",
+          borderCollapse: "collapse",
+          color: "black",
+          backgroundColor: "white"
+        }}
+      >
         <thead>
           <tr>
-            <th style={{ border: "1px solid #ccc" }}>Row</th>
-            <th style={{ border: "1px solid #ccc" }}>Col</th>
-            <th style={{ border: "1px solid #ccc" }}>Crop</th>
-            <th style={{ border: "1px solid #ccc" }}>Icon</th>
+            <th>Row</th>
+            <th>Col</th>
+            <th>Crop</th>
+            <th>Icon</th>
           </tr>
         </thead>
         <tbody>
-          {mirrorRows.map((row, i) => (
-            <tr key={i}>
-              <td style={{ border: "1px solid #ccc" }}>{row.row}</td>
-              <td style={{ border: "1px solid #ccc" }}>{row.col}</td>
-              <td style={{ border: "1px solid #ccc" }}>{row.crop}</td>
-              <td style={{ border: "1px solid #ccc" }}>{row.icon}</td>
+          {mirrorRows.map((row, idx) => (
+            <tr key={idx}>
+              <td>{row.row}</td>
+              <td>{row.col}</td>
+              <td>{row.crop}</td>
+              <td>{row.icon}</td>
             </tr>
           ))}
         </tbody>

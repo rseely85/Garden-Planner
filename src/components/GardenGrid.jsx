@@ -15,8 +15,8 @@ export default function GardenGrid({ grid, onCellClick }) {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: `repeat(${grid[0]?.length || 1}, 40px)`,
-          gridTemplateRows: `repeat(${grid.length || 1}, 40px)`,
+          gridTemplateColumns: `repeat(${grid[0].length}, 30px)`,
+          gridTemplateRows: `repeat(${grid.length}, 30px)`,
           border: "2px solid black"
         }}
       >
@@ -26,11 +26,17 @@ export default function GardenGrid({ grid, onCellClick }) {
               key={`${r}-${c}`}
               onClick={() => onCellClick(r, c)}
               style={{
-                width: "40px",
-                height: "40px",
-                backgroundColor: cell.planted ? "green" : "white",
+                width: "30px",
+                height: "30px",
                 border: "1px solid #ccc",
-                cursor: "pointer"
+                textAlign: "center",
+                lineHeight: "30px",
+                cursor: "pointer",
+                backgroundColor: cell.planted
+                  ? cell.crop === "Placeholder"
+                    ? "grey"
+                    : "green"
+                  : "white"
               }}
             >
               {cell.planted ? cell.icon : ""}
