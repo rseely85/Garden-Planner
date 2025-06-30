@@ -1,21 +1,38 @@
-import React from "react";
+import React, { useEffect } from "react";
 
-export default function GardenGrid({ grid, onCellClick }) {
+export default function GardenGrid({
+  grid,
+  setGrid,
+  gardenWidth,
+  gardenHeight,
+  onCellClick,
+  selectedPlant
+}) {
+  useEffect(() => {
+    const numCols = Math.max(Math.floor((gardenWidth * 12) / 12), 1);
+    const numRows = Math.max(Math.floor((gardenHeight * 12) / 12), 1);
+    const newGrid = Array.from({ length: numRows }, (_, r) =>
+      Array.from({ length: numCols }, (_, c) =>
+        grid[r] && grid[r][c] ? grid[r][c] : { planted: false, crop: null, icon: null }
+      )
+    );
+    setGrid(newGrid);
+  }, [gardenWidth, gardenHeight]);
+
   return (
     <div
       style={{
-        backgroundColor: "#e0f7ff",
-        padding: 10,
-        border: "4px solid blue",
         width: 800,
         height: 500,
-        overflow: "auto"
+        border: "4px solid blue",
+        overflow: "auto",
+        backgroundColor: "#e0f7ff"
       }}
     >
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: `repeat(${grid[0].length}, 30px)`,
+          gridTemplateColumns: `repeat(${grid[0]?.length || 1}, 30px)`,
           gridTemplateRows: `repeat(${grid.length}, 30px)`,
           border: "2px solid black"
         }}
@@ -28,15 +45,17 @@ export default function GardenGrid({ grid, onCellClick }) {
               style={{
                 width: "30px",
                 height: "30px",
-                border: "1px solid #ccc",
                 textAlign: "center",
                 lineHeight: "30px",
+                border: "1px solid #ccc",
                 cursor: "pointer",
                 backgroundColor: cell.planted
                   ? cell.crop === "Placeholder"
-                    ? "grey"
+                    ? "#999"
                     : "green"
-                  : "white"
+                  : "white",
+                color: "black",
+                fontSize: "16px"
               }}
             >
               {cell.planted ? cell.icon : ""}

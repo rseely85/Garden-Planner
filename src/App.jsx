@@ -4,18 +4,12 @@ import GardenGridMirror from "./components/GardenGridMirror";
 import plantsData from "./data/plants.json";
 
 export default function App() {
-  const [grid, setGrid] = useState([
-    [
-      { planted: true, crop: "TestCrop", icon: "🌱" },
-      { planted: false, crop: null, icon: null }
-    ],
-    [
-      { planted: false, crop: null, icon: null },
-      { planted: true, crop: "TestCrop", icon: "🌱" }
-    ]
-  ]);
+  const [grid, setGrid] = useState([]);
+  const [mirrorRows, setMirrorRows] = useState([]);
   const [plants, setPlants] = useState([]);
   const [selectedPlant, setSelectedPlant] = useState(null);
+  const [gardenWidth, setGardenWidth] = useState(10);
+  const [gardenHeight, setGardenHeight] = useState(20);
 
   useEffect(() => {
     setPlants(plantsData);
@@ -26,7 +20,7 @@ export default function App() {
     const newGrid = grid.map((row, rowIndex) =>
       row.map((cell, colIndex) => {
         if (rowIndex === r && colIndex === c) {
-          if (selectedPlant.plant === "Clear") {
+          if (cell.planted) {
             return { planted: false, crop: null, icon: null };
           } else {
             return {
@@ -40,24 +34,52 @@ export default function App() {
       })
     );
     setGrid(newGrid);
-  };
 
-  const mirrorRows = [];
-  grid.forEach((row, r) => {
-    row.forEach((cell, c) => {
-      if (cell.planted) {
-        mirrorRows.push({ row: r, col: c, crop: cell.crop, icon: cell.icon });
-      }
-    });
-  });
+    const newMirror = [];
+    newGrid.forEach((row, rIdx) =>
+      row.forEach((cell, cIdx) => {
+        if (cell.planted) {
+          newMirror.push({
+            row: rIdx,
+            col: cIdx,
+            crop: cell.crop,
+            icon: cell.icon
+          });
+        }
+      })
+    );
+    setMirrorRows(newMirror);
+  };
 
   return (
     <div style={{ padding: "1rem" }}>
       <h1 style={{ fontSize: "2rem", fontWeight: "bold" }}>
-        Robert's Garden Planner (Single-Click Apply)
+        Robert's Garden Planner (Grid Size)
       </h1>
+
+      <div style={{ marginBottom: "1rem" }}>
+        <label>
+          Width (ft):{" "}
+          <input
+            type="number"
+            value={gardenWidth}
+            onChange={(e) => setGardenWidth(parseInt(e.target.value) || 1)}
+            style={{ width: "60px", marginRight: "1rem" }}
+          />
+        </label>
+        <label>
+          Height (ft):{" "}
+          <input
+            type="number"
+            value={gardenHeight}
+            onChange={(e) => setGardenHeight(parseInt(e.target.value) || 1)}
+            style={{ width: "60px" }}
+          />
+        </label>
+      </div>
+
       <label>
-        Selected Plant:
+        Select Plant:
         <select
           value={selectedPlant ? selectedPlant.plant : ""}
           onChange={(e) => {
@@ -72,8 +94,16 @@ export default function App() {
           ))}
         </select>
       </label>
-      <div style={{ display: "flex", gap: "1rem" }}>
-        <GardenGrid grid={grid} onCellClick={handleCellClick} />
+
+      <div style={{ display: "flex", gap: "1rem", marginTop: "1rem" }}>
+        <GardenGrid
+          grid={grid}
+          setGrid={setGrid}
+          gardenWidth={gardenWidth}
+          gardenHeight={gardenHeight}
+          onCellClick={handleCellClick}
+          selectedPlant={selectedPlant}
+        />
         <GardenGridMirror mirrorRows={mirrorRows} />
       </div>
     </div>
