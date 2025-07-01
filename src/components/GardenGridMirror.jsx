@@ -1,40 +1,32 @@
-import React from "react";
-
 export default function GardenGridMirror({ mirrorRows }) {
   return (
     <div
       style={{
-        padding: 10,
-        border: "4px solid green",
-        width: 800,
-        height: 500,
+        border: "2px solid green",
+        width: "800px",
+        height: "500px",
         overflow: "auto",
-        backgroundColor: "white"
+        padding: "4px",
+        backgroundColor: "#fff",
+        boxSizing: "border-box"
       }}
     >
-      <table
-        style={{
-          width: "100%",
-          borderCollapse: "collapse",
-          color: "black",
-          backgroundColor: "white"
-        }}
-      >
+      <table style={{ width: "100%", borderCollapse: "collapse", color: "black" }}>
         <thead>
           <tr>
-            <th>Row</th>
-            <th>Col</th>
-            <th>Crop</th>
-            <th>Icon</th>
+            <th style={{ border: "1px solid #ccc" }}>Row</th>
+            <th style={{ border: "1px solid #ccc" }}>Col</th>
+            <th style={{ border: "1px solid #ccc" }}>Crop</th>
+            <th style={{ border: "1px solid #ccc" }}>Icon</th>
           </tr>
         </thead>
         <tbody>
           {mirrorRows.map((row, idx) => (
             <tr key={idx}>
-              <td>{row.row}</td>
-              <td>{row.col}</td>
-              <td>{row.crop}</td>
-              <td>{row.icon}</td>
+              <td style={{ border: "1px solid #ccc" }}>{row.row}</td>
+              <td style={{ border: "1px solid #ccc" }}>{row.col}</td>
+              <td style={{ border: "1px solid #ccc" }}>{row.crop}</td>
+              <td style={{ border: "1px solid #ccc" }}>{row.icon}</td>
             </tr>
           ))}
         </tbody>

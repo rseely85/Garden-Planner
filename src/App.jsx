@@ -4,31 +4,39 @@ import GardenGridMirror from "./components/GardenGridMirror";
 import plantsData from "./data/plants.json";
 
 export default function App() {
+  const [width, setWidth] = useState(10); // initial width in ft
+  const [height, setHeight] = useState(10); // initial height in ft
   const [grid, setGrid] = useState([]);
   const [plants, setPlants] = useState([]);
   const [selectedPlant, setSelectedPlant] = useState(null);
-  const [gardenWidth, setGardenWidth] = useState(10);
-  const [gardenHeight, setGardenHeight] = useState(10);
 
   useEffect(() => {
     setPlants(plantsData);
     setSelectedPlant(plantsData[0]);
-    // Initialize grid
-    const initialGrid = Array.from({ length: 10 }, () =>
-      Array.from({ length: 10 }, () => ({ planted: false, crop: null, icon: null }))
-    );
-    setGrid(initialGrid);
   }, []);
 
+  useEffect(() => {
+    // Rebuild grid whenever width/height change
+    const newGrid = [];
+    for (let r = 0; r < height; r++) {
+      const row = [];
+      for (let c = 0; c < width; c++) {
+        row.push({ planted: false, crop: null, icon: null });
+      }
+      newGrid.push(row);
+    }
+    setGrid(newGrid);
+  }, [width, height]);
+
   const handleCellClick = (r, c) => {
-    const newGrid = grid.map((row, rowIndex) =>
-      row.map((cell, colIndex) => {
-        if (rowIndex === r && colIndex === c) {
-          if (selectedPlant.plant === "Clear") {
-            return { planted: false, crop: null, icon: null };
-          } else {
-            return { planted: true, crop: selectedPlant.plant, icon: selectedPlant.icon };
-          }
+    const newGrid = grid.map((row, rIdx) =>
+      row.map((cell, cIdx) => {
+        if (rIdx === r && cIdx === c) {
+          return {
+            planted: true,
+            crop: selectedPlant.plant,
+            icon: selectedPlant.icon
+          };
         }
         return cell;
       })
@@ -37,10 +45,15 @@ export default function App() {
   };
 
   const mirrorRows = [];
-  grid.forEach((row, r) => {
-    row.forEach((cell, c) => {
+  grid.forEach((row, rIdx) => {
+    row.forEach((cell, cIdx) => {
       if (cell.planted) {
-        mirrorRows.push({ row: r, col: c, crop: cell.crop, icon: cell.icon });
+        mirrorRows.push({
+          row: rIdx,
+          col: cIdx,
+          crop: cell.crop,
+          icon: cell.icon
+        });
       }
     });
   });
@@ -48,20 +61,45 @@ export default function App() {
   return (
     <div style={{ padding: "1rem" }}>
       <h1>Robert's Garden Planner</h1>
+      <label>
+        Width (ft):
+        <input
+          type="number"
+          value={width}
+          onChange={(e) => setWidth(parseInt(e.target.value) || 0)}
+        />
+      </label>
+      <label style={{ marginLeft: "1rem" }}>
+        Height (ft):
+        <input
+          type="number"
+          value={height}
+          onChange={(e) => setHeight(parseInt(e.target.value) || 0)}
+        />
+      </label>
       <div>
-        Width (ft): <input type="number" value={gardenWidth} onChange={(e) => setGardenWidth(parseInt(e.target.value) || 0)} />
-        Height (ft): <input type="number" value={gardenHeight} onChange={(e) => setGardenHeight(parseInt(e.target.value) || 0)} />
-      </div>
-      <div>
-        Select Plant: 
-        <select value={selectedPlant ? selectedPlant.plant : ""} onChange={(e) => setSelectedPlant(plants.find(p => p.plant === e.target.value))}>
+        Select Plant:
+        <select
+          value={selectedPlant ? selectedPlant.plant : ""}
+          onChange={(e) => {
+            const plant = plants.find((p) => p.plant === e.target.value);
+            setSelectedPlant(plant);
+          }}
+        >
           {plants.map((p) => (
-            <option key={p.plant} value={p.plant}>{p.icon} {p.plant}</option>
+            <option key={p.plant} value={p.plant}>
+              {p.icon} {p.plant}
+            </option>
           ))}
         </select>
       </div>
       <div style={{ display: "flex", gap: "1rem" }}>
-        <GardenGrid grid={grid} onCellClick={handleCellClick} width={gardenWidth} height={gardenHeight} />
+        <GardenGrid
+          grid={grid}
+          onCellClick={handleCellClick}
+          width={width}
+          height={height}
+        />
         <GardenGridMirror mirrorRows={mirrorRows} />
       </div>
     </div>

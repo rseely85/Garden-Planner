@@ -1,43 +1,45 @@
 import React from "react";
 
-export default function GardenGrid({ grid, onCellClick, width, height }) {
+export default function GardenGrid({ grid, onCellClick }) {
   const cellSize = 20;
+  const frameWidth = 800;
+  const frameHeight = 500;
 
   return (
     <div
       style={{
-        backgroundColor: "#e0f7ff",
-        padding: 10,
+        width: `${frameWidth}px`,
+        height: `${frameHeight}px`,
         border: "4px solid blue",
-        width: 800,
-        height: 500,
-        overflow: "auto"
+        overflow: "auto",
+        backgroundColor: "#fff",
       }}
     >
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: `repeat(${grid[0]?.length || 0}, ${cellSize}px)`
+          gridTemplateColumns: `repeat(${grid[0]?.length || 0}, ${cellSize}px)`,
+          gridTemplateRows: `repeat(${grid.length}, ${cellSize}px)`,
         }}
       >
-        {grid.map((row, rIdx) =>
-          row.map((cell, cIdx) => (
+        {grid.map((row, r) =>
+          row.map((cell, c) => (
             <div
-              key={`${rIdx}-${cIdx}`}
-              onClick={() => onCellClick(rIdx, cIdx)}
+              key={`${r}-${c}`}
+              onClick={() => onCellClick(r, c)}
               style={{
-                width: cellSize,
-                height: cellSize,
-                border: "1px solid #ccc",
+                width: `${cellSize}px`,
+                height: `${cellSize}px`,
+                border: "1px solid lightgrey",
                 backgroundColor: cell.planted
                   ? cell.crop === "Placeholder"
-                    ? "grey"
-                    : "green"
+                    ? "#999"
+                    : "#4caf50"
                   : "white",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                cursor: "pointer"
+                fontSize: "14px",
               }}
             >
               {cell.planted ? cell.icon : ""}
