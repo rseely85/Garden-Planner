@@ -1,61 +1,43 @@
-import React, { useEffect } from "react";
+import React from "react";
 
-export default function GardenGrid({
-  grid,
-  setGrid,
-  gardenWidth,
-  gardenHeight,
-  onCellClick,
-  selectedPlant
-}) {
-  useEffect(() => {
-    const numCols = Math.max(Math.floor((gardenWidth * 12) / 12), 1);
-    const numRows = Math.max(Math.floor((gardenHeight * 12) / 12), 1);
-    const newGrid = Array.from({ length: numRows }, (_, r) =>
-      Array.from({ length: numCols }, (_, c) =>
-        grid[r] && grid[r][c] ? grid[r][c] : { planted: false, crop: null, icon: null }
-      )
-    );
-    setGrid(newGrid);
-  }, [gardenWidth, gardenHeight]);
+export default function GardenGrid({ grid, onCellClick, width, height }) {
+  const cellSize = 20;
 
   return (
     <div
       style={{
+        backgroundColor: "#e0f7ff",
+        padding: 10,
+        border: "4px solid blue",
         width: 800,
         height: 500,
-        border: "4px solid blue",
-        overflow: "auto",
-        backgroundColor: "#e0f7ff"
+        overflow: "auto"
       }}
     >
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: `repeat(${grid[0]?.length || 1}, 30px)`,
-          gridTemplateRows: `repeat(${grid.length}, 30px)`,
-          border: "2px solid black"
+          gridTemplateColumns: `repeat(${grid[0]?.length || 0}, ${cellSize}px)`
         }}
       >
-        {grid.map((row, r) =>
-          row.map((cell, c) => (
+        {grid.map((row, rIdx) =>
+          row.map((cell, cIdx) => (
             <div
-              key={`${r}-${c}`}
-              onClick={() => onCellClick(r, c)}
+              key={`${rIdx}-${cIdx}`}
+              onClick={() => onCellClick(rIdx, cIdx)}
               style={{
-                width: "30px",
-                height: "30px",
-                textAlign: "center",
-                lineHeight: "30px",
+                width: cellSize,
+                height: cellSize,
                 border: "1px solid #ccc",
-                cursor: "pointer",
                 backgroundColor: cell.planted
                   ? cell.crop === "Placeholder"
-                    ? "#999"
+                    ? "grey"
                     : "green"
                   : "white",
-                color: "black",
-                fontSize: "16px"
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer"
               }}
             >
               {cell.planted ? cell.icon : ""}
