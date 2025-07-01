@@ -1,0 +1,196 @@
+diff --git a/src/App.jsx b/src/App.jsx
+index 1630dac..d48d953 100755
+--- a/src/App.jsx
++++ b/src/App.jsx
+@@ -1,37 +1,20 @@
+-import React, { useState, useEffect } from "react";
++// AppCodeV25
++import React, { useState } from "react";
+ import GardenGrid from "./components/GardenGrid";
+ import GardenGridMirror from "./components/GardenGridMirror";
+ import plantsData from "./data/plants.json";
+ 
+ export default function App() {
+-  const [width, setWidth] = useState(10); // initial width in ft
+-  const [height, setHeight] = useState(10); // initial height in ft
++  const [width, setWidth] = useState(10);
++  const [height, setHeight] = useState(10);
+   const [grid, setGrid] = useState([]);
+-  const [plants, setPlants] = useState([]);
+-  const [selectedPlant, setSelectedPlant] = useState(null);
+-
+-  useEffect(() => {
+-    setPlants(plantsData);
+-    setSelectedPlant(plantsData[0]);
+-  }, []);
+-
+-  useEffect(() => {
+-    // Rebuild grid whenever width/height change
+-    const newGrid = [];
+-    for (let r = 0; r < height; r++) {
+-      const row = [];
+-      for (let c = 0; c < width; c++) {
+-        row.push({ planted: false, crop: null, icon: null });
+-      }
+-      newGrid.push(row);
+-    }
+-    setGrid(newGrid);
+-  }, [width, height]);
++  const [selectedPlant, setSelectedPlant] = useState(plantsData[0]);
++  const [zoom, setZoom] = useState(1.0);
+ 
+   const handleCellClick = (r, c) => {
+-    const newGrid = grid.map((row, rIdx) =>
+-      row.map((cell, cIdx) => {
+-        if (rIdx === r && cIdx === c) {
++    const newGrid = grid.map((row, rowIndex) =>
++      row.map((cell, colIndex) => {
++        if (rowIndex === r && colIndex === c) {
+           return {
+             planted: true,
+             crop: selectedPlant.plant,
+@@ -45,61 +28,34 @@ export default function App() {
+   };
+ 
+   const mirrorRows = [];
+-  grid.forEach((row, rIdx) => {
+-    row.forEach((cell, cIdx) => {
++  grid.forEach((row, r) => {
++    row.forEach((cell, c) => {
+       if (cell.planted) {
+-        mirrorRows.push({
+-          row: rIdx,
+-          col: cIdx,
+-          crop: cell.crop,
+-          icon: cell.icon
+-        });
++        mirrorRows.push({ row: r, col: c, crop: cell.crop, icon: cell.icon });
+       }
+     });
+   });
+ 
+   return (
+-    <div style={{ padding: "1rem" }}>
++    <div>
+       <h1>Robert's Garden Planner</h1>
+-      <label>
+-        Width (ft):
+-        <input
+-          type="number"
+-          value={width}
+-          onChange={(e) => setWidth(parseInt(e.target.value) || 0)}
+-        />
+-      </label>
+-      <label style={{ marginLeft: "1rem" }}>
+-        Height (ft):
+-        <input
+-          type="number"
+-          value={height}
+-          onChange={(e) => setHeight(parseInt(e.target.value) || 0)}
+-        />
+-      </label>
++      <div>
++        Width (ft): <input type="number" value={width} onChange={e => setWidth(parseInt(e.target.value) || 0)} />
++        Height (ft): <input type="number" value={height} onChange={e => setHeight(parseInt(e.target.value) || 0)} />
++      </div>
+       <div>
+         Select Plant:
+-        <select
+-          value={selectedPlant ? selectedPlant.plant : ""}
+-          onChange={(e) => {
+-            const plant = plants.find((p) => p.plant === e.target.value);
+-            setSelectedPlant(plant);
+-          }}
+-        >
+-          {plants.map((p) => (
+-            <option key={p.plant} value={p.plant}>
+-              {p.icon} {p.plant}
+-            </option>
++        <select value={selectedPlant.plant} onChange={e => setSelectedPlant(plantsData.find(p => p.plant === e.target.value))}>
++          {plantsData.map(plant => (
++            <option key={plant.plant} value={plant.plant}>{plant.icon} {plant.plant}</option>
+           ))}
+         </select>
+       </div>
++      <div>
++        Zoom: {Math.round(zoom * 100)}% <input type="range" min="0.5" max="2.0" step="0.1" value={zoom} onChange={e => setZoom(parseFloat(e.target.value))} />
++      </div>
+       <div style={{ display: "flex", gap: "1rem" }}>
+-        <GardenGrid
+-          grid={grid}
+-          onCellClick={handleCellClick}
+-          width={width}
+-          height={height}
+-        />
++        <GardenGrid width={width} height={height} grid={grid} setGrid={setGrid} onCellClick={handleCellClick} zoom={zoom} />
+         <GardenGridMirror mirrorRows={mirrorRows} />
+       </div>
+     </div>
+diff --git a/src/components/GardenGrid.jsx b/src/components/GardenGrid.jsx
+index 763a07f..5eb6f6e 100755
+--- a/src/components/GardenGrid.jsx
++++ b/src/components/GardenGrid.jsx
+@@ -1,25 +1,26 @@
+ import React from "react";
+ 
+-export default function GardenGrid({ grid, onCellClick }) {
+-  const cellSize = 20;
+-  const frameWidth = 800;
+-  const frameHeight = 500;
++export default function GardenGrid({ grid, onCellClick, zoom = 1 }) {
++  const CELL_BASE_SIZE = 20; // Base size in px before zoom
+ 
+   return (
+     <div
+       style={{
+-        width: `${frameWidth}px`,
+-        height: `${frameHeight}px`,
++        width: "800px",
++        height: "500px",
+         border: "4px solid blue",
+         overflow: "auto",
+-        backgroundColor: "#fff",
++        backgroundColor: "#e0f7ff",
+       }}
+     >
+       <div
+         style={{
+           display: "grid",
+-          gridTemplateColumns: `repeat(${grid[0]?.length || 0}, ${cellSize}px)`,
+-          gridTemplateRows: `repeat(${grid.length}, ${cellSize}px)`,
++          gridTemplateColumns: `repeat(${grid[0]?.length || 0}, ${
++            CELL_BASE_SIZE * zoom
++          }px)`,
++          gridTemplateRows: `repeat(${grid.length}, ${CELL_BASE_SIZE * zoom}px)`,
++          border: "2px solid black",
+         }}
+       >
+         {grid.map((row, r) =>
+@@ -28,18 +29,19 @@ export default function GardenGrid({ grid, onCellClick }) {
+               key={`${r}-${c}`}
+               onClick={() => onCellClick(r, c)}
+               style={{
+-                width: `${cellSize}px`,
+-                height: `${cellSize}px`,
+-                border: "1px solid lightgrey",
++                width: `${CELL_BASE_SIZE * zoom}px`,
++                height: `${CELL_BASE_SIZE * zoom}px`,
++                border: "1px solid #ccc",
+                 backgroundColor: cell.planted
+                   ? cell.crop === "Placeholder"
+                     ? "#999"
+-                    : "#4caf50"
++                    : "green"
+                   : "white",
+-                display: "flex",
+-                alignItems: "center",
+-                justifyContent: "center",
+-                fontSize: "14px",
++                color: "black",
++                fontSize: `${12 * zoom}px`,
++                textAlign: "center",
++                lineHeight: `${CELL_BASE_SIZE * zoom}px`,
++                cursor: "pointer",
+               }}
+             >
+               {cell.planted ? cell.icon : ""}

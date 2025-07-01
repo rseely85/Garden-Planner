@@ -1,22 +1,18 @@
+// AppCodeV26
 import React, { useState, useEffect } from "react";
 import GardenGrid from "./components/GardenGrid";
 import GardenGridMirror from "./components/GardenGridMirror";
 import plantsData from "./data/plants.json";
 
 export default function App() {
-  const [width, setWidth] = useState(10); // initial width in ft
-  const [height, setHeight] = useState(10); // initial height in ft
+  const [width, setWidth] = useState(10);
+  const [height, setHeight] = useState(10);
   const [grid, setGrid] = useState([]);
-  const [plants, setPlants] = useState([]);
-  const [selectedPlant, setSelectedPlant] = useState(null);
+  const [selectedPlant, setSelectedPlant] = useState(plantsData[0]);
+  const [zoom, setZoom] = useState(1.0);
 
+  // ✅ Rebuild grid when width/height change
   useEffect(() => {
-    setPlants(plantsData);
-    setSelectedPlant(plantsData[0]);
-  }, []);
-
-  useEffect(() => {
-    // Rebuild grid whenever width/height change
     const newGrid = [];
     for (let r = 0; r < height; r++) {
       const row = [];
@@ -29,9 +25,9 @@ export default function App() {
   }, [width, height]);
 
   const handleCellClick = (r, c) => {
-    const newGrid = grid.map((row, rIdx) =>
-      row.map((cell, cIdx) => {
-        if (rIdx === r && cIdx === c) {
+    const newGrid = grid.map((row, rowIndex) =>
+      row.map((cell, colIndex) => {
+        if (rowIndex === r && colIndex === c) {
           return {
             planted: true,
             crop: selectedPlant.plant,
@@ -45,60 +41,65 @@ export default function App() {
   };
 
   const mirrorRows = [];
-  grid.forEach((row, rIdx) => {
-    row.forEach((cell, cIdx) => {
+  grid.forEach((row, r) => {
+    row.forEach((cell, c) => {
       if (cell.planted) {
-        mirrorRows.push({
-          row: rIdx,
-          col: cIdx,
-          crop: cell.crop,
-          icon: cell.icon
-        });
+        mirrorRows.push({ row: r, col: c, crop: cell.crop, icon: cell.icon });
       }
     });
   });
 
   return (
-    <div style={{ padding: "1rem" }}>
+    <div>
       <h1>Robert's Garden Planner</h1>
-      <label>
-        Width (ft):
+      <div>
+        Width (ft):{" "}
         <input
           type="number"
           value={width}
           onChange={(e) => setWidth(parseInt(e.target.value) || 0)}
         />
-      </label>
-      <label style={{ marginLeft: "1rem" }}>
-        Height (ft):
+        Height (ft):{" "}
         <input
           type="number"
           value={height}
           onChange={(e) => setHeight(parseInt(e.target.value) || 0)}
         />
-      </label>
+      </div>
       <div>
-        Select Plant:
+        Select Plant:{" "}
         <select
-          value={selectedPlant ? selectedPlant.plant : ""}
-          onChange={(e) => {
-            const plant = plants.find((p) => p.plant === e.target.value);
-            setSelectedPlant(plant);
-          }}
+          value={selectedPlant.plant}
+          onChange={(e) =>
+            setSelectedPlant(plantsData.find((p) => p.plant === e.target.value))
+          }
         >
-          {plants.map((p) => (
-            <option key={p.plant} value={p.plant}>
-              {p.icon} {p.plant}
+          {plantsData.map((plant) => (
+            <option key={plant.plant} value={plant.plant}>
+              {plant.icon} {plant.plant}
             </option>
           ))}
         </select>
       </div>
+      <div>
+        Zoom: {Math.round(zoom * 100)}%{" "}
+        <input
+          type="range"
+          min="0.5"
+          max="2.0"
+          step="0.1"
+          value={zoom}
+          onChange={(e) => setZoom(parseFloat(e.target.value))}
+        />
+      </div>
       <div style={{ display: "flex", gap: "1rem" }}>
         <GardenGrid
-          grid={grid}
-          onCellClick={handleCellClick}
           width={width}
           height={height}
+          grid={grid}
+          setGrid={setGrid}
+          onCellClick={handleCellClick}
+          zoom={zoom}
         />
         <GardenGridMirror mirrorRows={mirrorRows} />
       </div>

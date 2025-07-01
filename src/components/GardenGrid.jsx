@@ -1,25 +1,26 @@
 import React from "react";
 
-export default function GardenGrid({ grid, onCellClick }) {
-  const cellSize = 20;
-  const frameWidth = 800;
-  const frameHeight = 500;
+export default function GardenGrid({ grid, onCellClick, zoom = 1 }) {
+  const CELL_BASE_SIZE = 20; // Base size in px before zoom
 
   return (
     <div
       style={{
-        width: `${frameWidth}px`,
-        height: `${frameHeight}px`,
+        width: "800px",
+        height: "500px",
         border: "4px solid blue",
         overflow: "auto",
-        backgroundColor: "#fff",
+        backgroundColor: "#e0f7ff",
       }}
     >
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: `repeat(${grid[0]?.length || 0}, ${cellSize}px)`,
-          gridTemplateRows: `repeat(${grid.length}, ${cellSize}px)`,
+          gridTemplateColumns: `repeat(${grid[0]?.length || 0}, ${
+            CELL_BASE_SIZE * zoom
+          }px)`,
+          gridTemplateRows: `repeat(${grid.length}, ${CELL_BASE_SIZE * zoom}px)`,
+          border: "2px solid black",
         }}
       >
         {grid.map((row, r) =>
@@ -28,18 +29,19 @@ export default function GardenGrid({ grid, onCellClick }) {
               key={`${r}-${c}`}
               onClick={() => onCellClick(r, c)}
               style={{
-                width: `${cellSize}px`,
-                height: `${cellSize}px`,
-                border: "1px solid lightgrey",
+                width: `${CELL_BASE_SIZE * zoom}px`,
+                height: `${CELL_BASE_SIZE * zoom}px`,
+                border: "1px solid #ccc",
                 backgroundColor: cell.planted
                   ? cell.crop === "Placeholder"
                     ? "#999"
-                    : "#4caf50"
+                    : "green"
                   : "white",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: "14px",
+                color: "black",
+                fontSize: `${12 * zoom}px`,
+                textAlign: "center",
+                lineHeight: `${CELL_BASE_SIZE * zoom}px`,
+                cursor: "pointer",
               }}
             >
               {cell.planted ? cell.icon : ""}
