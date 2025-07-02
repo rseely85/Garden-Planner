@@ -1,7 +1,43 @@
-import React from "react";
+// GardenGridCodeV54
+import React, { useState, useEffect } from "react";
 
-export default function GardenGrid({ grid, onCellClick, zoom = 1 }) {
-  const CELL_BASE_SIZE = 20; // Base size in px before zoom
+export default function GardenGrid({
+  width,
+  height,
+  grid,
+  setGrid,
+  onCellClick,
+  zoom
+}) {
+  const [shiftStart, setShiftStart] = useState(null);
+
+  useEffect(() => {
+    const newGrid = [];
+    for (let r = 0; r < height; r++) {
+      const row = [];
+      for (let c = 0; c < width; c++) {
+        row.push(grid[r]?.[c] || { planted: false, crop: null, icon: null });
+      }
+      newGrid.push(row);
+    }
+    setGrid(newGrid);
+  }, [width, height]);
+
+  const handleClick = (r, c, e) => {
+    if (e.shiftKey) {
+      if (!shiftStart) {
+        setShiftStart({ r, c });
+      } else {
+        onCellClick(r, c, true, shiftStart);
+        setShiftStart(null);
+      }
+    } else {
+      onCellClick(r, c, false, null);
+      setShiftStart(null);
+    }
+  };
+
+  const CELL_BASE_SIZE = 20;
 
   return (
     <div
@@ -10,24 +46,21 @@ export default function GardenGrid({ grid, onCellClick, zoom = 1 }) {
         height: "500px",
         border: "4px solid blue",
         overflow: "auto",
-        backgroundColor: "#e0f7ff",
+        backgroundColor: "#e0f7ff"
       }}
     >
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: `repeat(${grid[0]?.length || 0}, ${
-            CELL_BASE_SIZE * zoom
-          }px)`,
-          gridTemplateRows: `repeat(${grid.length}, ${CELL_BASE_SIZE * zoom}px)`,
-          border: "2px solid black",
+          gridTemplateColumns: `repeat(${width}, ${CELL_BASE_SIZE * zoom}px)`,
+          gridTemplateRows: `repeat(${height}, ${CELL_BASE_SIZE * zoom}px)`
         }}
       >
         {grid.map((row, r) =>
           row.map((cell, c) => (
             <div
               key={`${r}-${c}`}
-              onClick={() => onCellClick(r, c)}
+              onClick={(e) => handleClick(r, c, e)}
               style={{
                 width: `${CELL_BASE_SIZE * zoom}px`,
                 height: `${CELL_BASE_SIZE * zoom}px`,
@@ -40,8 +73,7 @@ export default function GardenGrid({ grid, onCellClick, zoom = 1 }) {
                 color: "black",
                 fontSize: `${12 * zoom}px`,
                 textAlign: "center",
-                lineHeight: `${CELL_BASE_SIZE * zoom}px`,
-                cursor: "pointer",
+                lineHeight: `${CELL_BASE_SIZE * zoom}px`
               }}
             >
               {cell.planted ? cell.icon : ""}
