@@ -11,6 +11,9 @@ export default function App() {
   const [selectedPlant, setSelectedPlant] = useState(plantsData[0]);
   const [shiftStart, setShiftStart] = useState(null);
   const [zoom, setZoom] = useState(1.0);
+  const [scale, setScale] = useState(12); // default 12"
+  const [cellSize, setCellSize] = useState(12); // default to 12"
+ 
 
   const handleCellClick = (r, c, isShift, shiftStart) => {
     let newGrid = [...grid];
@@ -64,6 +67,8 @@ export default function App() {
       }
     });
   });
+  const gridWidthInCells = Math.floor((width * 12) / cellSize);
+const gridHeightInCells = Math.floor((height * 12) / cellSize);
 
   return (
     <div>
@@ -82,6 +87,27 @@ export default function App() {
           onChange={(e) => setHeight(parseInt(e.target.value) || 0)}
         />
       </div>
+      <div>
+  <label>Cell Size:</label>
+  <label>
+    <input
+      type="radio"
+      value={6}
+      checked={cellSize === 6}
+      onChange={() => setCellSize(6)}
+    />
+    6"
+  </label>
+  <label>
+    <input
+      type="radio"
+      value={12}
+      checked={cellSize === 12}
+      onChange={() => setCellSize(12)}
+    />
+    12"
+  </label>
+</div>
       <div>
         Select Plant:
         <select
@@ -112,15 +138,18 @@ export default function App() {
       </div>
       <div style={{ display: "flex", gap: "1rem" }}>
         <GardenGrid
-          width={width}
-          height={height}
-          grid={grid}
-          setGrid={setGrid}
-          onCellClick={handleCellClick}
-          zoom={zoom}
-        />
+  width={gridWidthInCells}
+  height={gridHeightInCells}
+  grid={grid}
+  setGrid={setGrid}
+  onCellClick={handleCellClick}
+  cellSize={cellSize}
+  zoom={zoom}
+        /><div>
+ 
+</div>
         <GardenGridMirror mirrorRows={mirrorRows} />
-      </div>
+      </div>      
     </div>
   );
 }
