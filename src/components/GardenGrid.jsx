@@ -65,7 +65,7 @@ export default function GardenGrid({
                 width: `${CELL_BASE_SIZE * zoom}px`,
                 height: `${CELL_BASE_SIZE * zoom}px`,
                 border: "1px solid #ccc",
-                backgroundColor: cell.planted
+                backgroundColor: cell.planted && cell.crop && cell.crop !== "Clear"
                   ? cell.crop === "Placeholder"
                     ? "#999"
                     : "green"
