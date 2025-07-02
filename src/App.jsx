@@ -9,6 +9,7 @@ export default function App() {
   const [height, setHeight] = useState(10);
   const [grid, setGrid] = useState([]);
   const [selectedPlant, setSelectedPlant] = useState(plantsData[0]);
+  const [shiftStart, setShiftStart] = useState(null);
   const [zoom, setZoom] = useState(1.0);
 
   const handleCellClick = (r, c, isShift, shiftStart) => {
@@ -21,10 +22,10 @@ export default function App() {
         const max = Math.max(c, shiftStart.c);
         for (let i = min; i <= max; i++) {
           newGrid[r][i] = {
-            planted: true,
-            crop: selectedPlant.plant,
-            icon: selectedPlant.icon
-          };
+  planted: selectedPlant.plant !== 'Clear',
+  crop: selectedPlant.plant !== 'Clear' ? selectedPlant.plant : null,
+  icon: selectedPlant.plant !== 'Clear' ? selectedPlant.icon : null
+};
         }
       } else if (c === shiftStart.c) {
         // Fill column
@@ -32,19 +33,19 @@ export default function App() {
         const max = Math.max(r, shiftStart.r);
         for (let i = min; i <= max; i++) {
           newGrid[i][c] = {
-            planted: true,
-            crop: selectedPlant.plant,
-            icon: selectedPlant.icon
-          };
+  planted: selectedPlant.plant !== 'Clear',
+  crop: selectedPlant.plant !== 'Clear' ? selectedPlant.plant : null,
+  icon: selectedPlant.plant !== 'Clear' ? selectedPlant.icon : null
+};
         }
       }
     } else {
       // Single cell
       newGrid[r][c] = {
-        planted: true,
-        crop: selectedPlant.plant,
-        icon: selectedPlant.icon
-      };
+  planted: selectedPlant.plant !== 'Clear',
+  crop: selectedPlant.plant !== 'Clear' ? selectedPlant.plant : null,
+  icon: selectedPlant.plant !== 'Clear' ? selectedPlant.icon : null
+};
     }
 
     setGrid(newGrid);
