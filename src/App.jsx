@@ -5,6 +5,9 @@ import GardenGridMirror from "./components/GardenGridMirror";
 import plantsData from "./data/plants.json";
 
 export default function App() {
+  const [selectedZone, setSelectedZone] = useState("");
+  const [selectedLight, setSelectedLight] = useState("");
+  const [selectedSoil, setSelectedSoil] = useState("");
   const [width, setWidth] = useState(10);
   const [height, setHeight] = useState(10);
   const [grid, setGrid] = useState([]);
@@ -69,7 +72,11 @@ export default function App() {
   });
   const gridWidthInCells = Math.floor((width * 12) / cellSize);
 const gridHeightInCells = Math.floor((height * 12) / cellSize);
-
+const filteredPlants = plantsData.filter(p => 
+  (selectedZone === "" || p.zone.includes(selectedZone)) &&
+  (selectedLight === "" || p.light.includes(selectedLight)) &&
+  (selectedSoil === "" || p.soil.includes(selectedSoil))
+);
   return (
     <div>
       <h1>Robert's Garden Planner</h1>
@@ -108,23 +115,58 @@ const gridHeightInCells = Math.floor((height * 12) / cellSize);
     12"
   </label>
 </div>
-      <div>
-        Select Plant:
-        <select
-          value={selectedPlant.plant}
-          onChange={(e) =>
-            setSelectedPlant(
-              plantsData.find((p) => p.plant === e.target.value)
-            )
-          }
-        >
-          {plantsData.map((p) => (
-            <option key={p.plant} value={p.plant}>
-              {p.icon} {p.plant}
-            </option>
-          ))}
-        </select>
-      </div>
+      <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+  <div>
+    Select Plant:
+    <select
+      value={selectedPlant.plant}
+      onChange={(e) =>
+        setSelectedPlant(
+          plantsData.find((p) => p.plant === e.target.value)
+        )
+      }
+    >
+      {filteredPlants.map((p) => (
+        <option key={p.plant} value={p.plant}>
+          {p.icon} {p.plant}
+        </option>
+      ))}
+    </select>
+  </div>
+
+  <div>
+    Zone:
+    <select value={selectedZone} onChange={(e) => setSelectedZone(e.target.value)}>
+      <option value="">All</option>
+      <option value="5">5</option>
+      <option value="5b">5b</option>
+      <option value="6">6</option>
+      <option value="6b">6b</option>
+      <option value="7">7</option>
+      <option value="7b">7b</option>
+    </select>
+  </div>
+
+  <div>
+    Light:
+    <select value={selectedLight} onChange={(e) => setSelectedLight(e.target.value)}>
+      <option value="">All</option>
+      <option value="full sun">Full Sun</option>
+      <option value="partial shade">Partial Shade</option>
+      <option value="shade">Shade</option>
+    </select>
+  </div>
+
+  <div>
+    Soil:
+    <select value={selectedSoil} onChange={(e) => setSelectedSoil(e.target.value)}>
+      <option value="">All</option>
+      <option value="loamy">Loamy</option>
+      <option value="sandy">Sandy</option>
+      <option value="clay">Clay</option>
+    </select>
+  </div>
+</div>
       <div>
         Zoom: {Math.round(zoom * 100)}%{" "}
         <input
