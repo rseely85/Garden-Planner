@@ -1,4 +1,5 @@
-export default function GardenGridMirror({ mirrorRows }) {
+export default function GardenGridMirror({ mirrorRows }) {  
+  console.log("GardenGridMirror received:", mirrorRows);
   return (
     <div
       style={{
@@ -18,6 +19,7 @@ export default function GardenGridMirror({ mirrorRows }) {
             <th style={{ border: "1px solid #ccc" }}>Col</th>
             <th style={{ border: "1px solid #ccc" }}>Crop</th>
             <th style={{ border: "1px solid #ccc" }}>Icon</th>
+            <th style={{ border: "1px solid #ccc" }}>Qty</th>
           </tr>
         </thead>
         <tbody>
@@ -27,6 +29,7 @@ export default function GardenGridMirror({ mirrorRows }) {
               <td style={{ border: "1px solid #ccc" }}>{row.col}</td>
               <td style={{ border: "1px solid #ccc" }}>{row.crop}</td>
               <td style={{ border: "1px solid #ccc" }}>{row.icon}</td>
+              <td style={{ border: "1px solid #ccc" }}>{row.qty}</td>
             </tr>
           ))}
         </tbody>

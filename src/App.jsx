@@ -57,25 +57,36 @@ export default function App() {
     setGrid(newGrid);
   };
 
-  const mirrorRows = [];
-  grid.forEach((row, r) => {
-    row.forEach((cell, c) => {
-      if (cell && cell.planted) {
-        mirrorRows.push({
-          row: r,
-          col: c,
-          crop: cell.crop,
-          icon: cell.icon
-        });
-      }
-    });
+ const mirrorRows = [];
+grid.forEach((row, r) => {
+  row.forEach((cell, c) => {
+    if (cell && cell.planted) {
+      const plantData = plantsData.find(p => p.plant === cell.crop);
+      const spacing = (plantData && plantData.spacing) ? plantData.spacing : 12;
+      const qtyRaw = 1 + (cellSize / spacing);
+      const qty = qtyRaw > 1.75 ? Math.ceil(qtyRaw) : 1;
+
+      mirrorRows.push({
+        row: r,
+        col: c,
+        crop: cell.crop,
+        icon: cell.icon,
+        qty
+      });
+    }
   });
+});
+console.log("mirrorRows with qty:", mirrorRows);
   const gridWidthInCells = Math.floor((width * 12) / cellSize);
 const gridHeightInCells = Math.floor((height * 12) / cellSize);
 const filteredPlants = plantsData.filter(p => 
-  (selectedZone === "" || p.zone.includes(selectedZone)) &&
-  (selectedLight === "" || p.light.includes(selectedLight)) &&
-  (selectedSoil === "" || p.soil.includes(selectedSoil))
+  p.plant === "Clear" || 
+  p.plant === "Placeholder" || 
+  (
+    (selectedZone === "" || p.zone.includes(selectedZone)) &&
+    (selectedLight === "" || p.light.includes(selectedLight)) &&
+    (selectedSoil === "" || p.soil.includes(selectedSoil))
+  )
 );
   return (
     <div>
