@@ -1,4 +1,19 @@
-[
+[{
+  "plant": "Clear",
+  "icon": "❌",
+  "zone": [],
+  "light": [],
+  "soil": [],
+  "spacing": 12
+},
+{
+  "plant": "Placeholder",
+  "icon": "⬜",
+  "zone": [],
+  "light": [],
+  "soil": [],
+  "spacing": 12
+},
   {
     "plant": "Tomato",
     "icon": "🍅",
