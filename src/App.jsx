@@ -16,7 +16,7 @@ export default function App() {
   const [zoom, setZoom] = useState(1.0);
   const [scale, setScale] = useState(12); // default 12"
   const [cellSize, setCellSize] = useState(12); // default to 12"
- 
+  const [viewMode, setViewMode] = useState("single"); // "single" or "grouped"
 
   const handleCellClick = (r, c, isShift, shiftStart) => {
     let newGrid = [...grid];
@@ -28,10 +28,10 @@ export default function App() {
         const max = Math.max(c, shiftStart.c);
         for (let i = min; i <= max; i++) {
           newGrid[r][i] = {
-  planted: selectedPlant.plant !== 'Clear',
-  crop: selectedPlant.plant !== 'Clear' ? selectedPlant.plant : null,
-  icon: selectedPlant.plant !== 'Clear' ? selectedPlant.icon : null
-};
+            planted: selectedPlant.plant !== "Clear",
+            crop: selectedPlant.plant !== "Clear" ? selectedPlant.plant : null,
+            icon: selectedPlant.plant !== "Clear" ? selectedPlant.icon : null,
+          };
         }
       } else if (c === shiftStart.c) {
         // Fill column
@@ -39,55 +39,63 @@ export default function App() {
         const max = Math.max(r, shiftStart.r);
         for (let i = min; i <= max; i++) {
           newGrid[i][c] = {
-  planted: selectedPlant.plant !== 'Clear',
-  crop: selectedPlant.plant !== 'Clear' ? selectedPlant.plant : null,
-  icon: selectedPlant.plant !== 'Clear' ? selectedPlant.icon : null
-};
+            planted: selectedPlant.plant !== "Clear",
+            crop: selectedPlant.plant !== "Clear" ? selectedPlant.plant : null,
+            icon: selectedPlant.plant !== "Clear" ? selectedPlant.icon : null,
+          };
         }
       }
     } else {
       // Single cell
       newGrid[r][c] = {
-  planted: selectedPlant.plant !== 'Clear',
-  crop: selectedPlant.plant !== 'Clear' ? selectedPlant.plant : null,
-  icon: selectedPlant.plant !== 'Clear' ? selectedPlant.icon : null
-};
+        planted: selectedPlant.plant !== "Clear",
+        crop: selectedPlant.plant !== "Clear" ? selectedPlant.plant : null,
+        icon: selectedPlant.plant !== "Clear" ? selectedPlant.icon : null,
+      };
     }
 
     setGrid(newGrid);
   };
 
- const mirrorRows = [];
-grid.forEach((row, r) => {
-  row.forEach((cell, c) => {
-    if (cell && cell.planted) {
-      const plantData = plantsData.find(p => p.plant === cell.crop);
-      const spacing = (plantData && plantData.spacing) ? plantData.spacing : 12;
-      const qtyRaw = 1 + (cellSize / spacing);
-      const qty = qtyRaw > 1.75 ? Math.ceil(qtyRaw) : 1;
-
-      mirrorRows.push({
-        row: r,
-        col: c,
-        crop: cell.crop,
-        icon: cell.icon,
-        qty
-      });
-    }
+  const mirrorRows = [];
+  grid.forEach((row, r) => {
+    row.forEach((cell, c) => {
+      if (cell && cell.planted) {
+        let plantData = plantsData.find((p) => p.plant === cell.crop);
+        let spacing = 12;
+        let qty = 1;
+        if (plantData) {
+          if (plantData.plant === "Planter Border") {
+            spacing = 6; // always 6" for Planter Border
+            // qty: for each cell, if cellSize is 6" = 1, if 12" = 2
+            qty = cellSize === 12 ? 2 : 1;
+          } else {
+            spacing = plantData.spacing ? plantData.spacing : 12;
+            const qtyRaw = 1 + cellSize / spacing;
+            qty = qtyRaw > 1.75 ? Math.ceil(qtyRaw) : 1;
+          }
+        }
+        mirrorRows.push({
+          row: r,
+          col: c,
+          crop: cell.crop,
+          icon: cell.icon,
+          qty,
+        });
+      }
+    });
   });
-});
-console.log("mirrorRows with qty:", mirrorRows);
+  console.log("mirrorRows with qty:", mirrorRows);
   const gridWidthInCells = Math.floor((width * 12) / cellSize);
-const gridHeightInCells = Math.floor((height * 12) / cellSize);
-const filteredPlants = plantsData.filter(p => 
-  p.plant === "Clear" || 
-  p.plant === "Placeholder" || 
-  (
-    (selectedZone === "" || p.zone.includes(selectedZone)) &&
-    (selectedLight === "" || p.light.includes(selectedLight)) &&
-    (selectedSoil === "" || p.soil.includes(selectedSoil))
-  )
-);
+  const gridHeightInCells = Math.floor((height * 12) / cellSize);
+  const filteredPlants = plantsData.filter(
+    (p) =>
+      p.plant === "Clear" ||
+      p.plant === "Placeholder" ||
+      ((selectedZone === "" || p.zone.includes(selectedZone)) &&
+        (selectedLight === "" || p.light.includes(selectedLight)) &&
+        (selectedSoil === "" || p.soil.includes(selectedSoil)))
+  );
   return (
     <div>
       <h1>Robert's Garden Planner</h1>
@@ -106,78 +114,108 @@ const filteredPlants = plantsData.filter(p =>
         />
       </div>
       <div>
-  <label>Cell Size:</label>
-  <label>
-    <input
-      type="radio"
-      value={6}
-      checked={cellSize === 6}
-      onChange={() => setCellSize(6)}
-    />
-    6"
-  </label>
-  <label>
-    <input
-      type="radio"
-      value={12}
-      checked={cellSize === 12}
-      onChange={() => setCellSize(12)}
-    />
-    12"
-  </label>
-</div>
+        <label>Cell Size:</label>
+        <label>
+          <input
+            type="radio"
+            value={6}
+            checked={cellSize === 6}
+            onChange={() => setCellSize(6)}
+          />
+          6"
+        </label>
+        <label>
+          <input
+            type="radio"
+            value={12}
+            checked={cellSize === 12}
+            onChange={() => setCellSize(12)}
+          />
+          12"
+        </label>
+      </div>
       <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-  <div>
-    Select Plant:
-    <select
-      value={selectedPlant.plant}
-      onChange={(e) =>
-        setSelectedPlant(
-          plantsData.find((p) => p.plant === e.target.value)
-        )
-      }
-    >
-      {filteredPlants.map((p) => (
-        <option key={p.plant} value={p.plant}>
-          {p.icon} {p.plant}
-        </option>
-      ))}
-    </select>
-  </div>
+        <div>
+          Select Plant:
+          <select
+            value={selectedPlant.plant}
+            onChange={(e) =>
+              setSelectedPlant(
+                plantsData.find((p) => p.plant === e.target.value)
+              )
+            }
+          >
+            {filteredPlants.map((p) => (
+              <option key={p.plant} value={p.plant}>
+                {p.icon} {p.plant}
+              </option>
+            ))}
+          </select>
+        </div>
 
-  <div>
-    Zone:
-    <select value={selectedZone} onChange={(e) => setSelectedZone(e.target.value)}>
-      <option value="">All</option>
-      <option value="5">5</option>
-      <option value="5b">5b</option>
-      <option value="6">6</option>
-      <option value="6b">6b</option>
-      <option value="7">7</option>
-      <option value="7b">7b</option>
-    </select>
-  </div>
+        <div>
+          Zone:
+          <select
+            value={selectedZone}
+            onChange={(e) => setSelectedZone(e.target.value)}
+          >
+            <option value="">All</option>
+            <option value="5">5</option>
+            <option value="5b">5b</option>
+            <option value="6">6</option>
+            <option value="6b">6b</option>
+            <option value="7">7</option>
+            <option value="7b">7b</option>
+          </select>
+        </div>
 
-  <div>
-    Light:
-    <select value={selectedLight} onChange={(e) => setSelectedLight(e.target.value)}>
-      <option value="">All</option>
-      <option value="full sun">Full Sun</option>
-      <option value="partial shade">Partial Shade</option>
-      <option value="shade">Shade</option>
-    </select>
-  </div>
+        <div>
+          Light:
+          <select
+            value={selectedLight}
+            onChange={(e) => setSelectedLight(e.target.value)}
+          >
+            <option value="">All</option>
+            <option value="full sun">Full Sun</option>
+            <option value="partial shade">Partial Shade</option>
+            <option value="shade">Shade</option>
+          </select>
+        </div>
 
-  <div>
-    Soil:
-    <select value={selectedSoil} onChange={(e) => setSelectedSoil(e.target.value)}>
-      <option value="">All</option>
-      <option value="loamy">Loamy</option>
-      <option value="sandy">Sandy</option>
-      <option value="clay">Clay</option>
-    </select>
-  </div>
-</div>
+        <div>
+          Soil:
+          <select
+            value={selectedSoil}
+            onChange={(e) => setSelectedSoil(e.target.value)}
+          >
+            <option value="">All</option>
+            <option value="loamy">Loamy</option>
+            <option value="sandy">Sandy</option>
+            <option value="clay">Clay</option>
+          </select>
+        </div>
+        {/* Toggle buttons for GardenGridMirror view mode */}
+        <div style={{ marginLeft: "2em", textAlign: "center" }}>
+          <label>
+            <input
+              type="radio"
+              value="single"
+              checked={viewMode === "single"}
+              onChange={() => setViewMode("single")}
+            />
+            Single Row
+          </label>
+          <label style={{ marginLeft: "1em" }}>
+            <input
+              type="radio"
+              value="grouped"
+              checked={viewMode === "grouped"}
+              onChange={() => setViewMode("grouped")}
+            />
+            Grouped
+          </label>
+        </div>
+      </div>
       <div>
         Zoom: {Math.round(zoom * 100)}%{" "}
         <input
@@ -191,18 +229,18 @@ const filteredPlants = plantsData.filter(p =>
       </div>
       <div style={{ display: "flex", gap: "1rem" }}>
         <GardenGrid
-  width={gridWidthInCells}
-  height={gridHeightInCells}
-  grid={grid}
-  setGrid={setGrid}
-  onCellClick={handleCellClick}
-  cellSize={cellSize}
-  zoom={zoom}
-        /><div>
- 
-</div>
-        <GardenGridMirror mirrorRows={mirrorRows} />
-      </div>      
+          width={gridWidthInCells}
+          height={gridHeightInCells}
+          grid={grid}
+          setGrid={setGrid}
+          onCellClick={handleCellClick}
+          cellSize={cellSize}
+          zoom={zoom}
+        />
+        <div>
+          <GardenGridMirror mirrorRows={mirrorRows} viewMode={viewMode} />
+        </div>
+      </div>
     </div>
   );
 }
