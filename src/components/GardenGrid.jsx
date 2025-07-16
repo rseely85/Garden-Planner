@@ -40,15 +40,7 @@ export default function GardenGrid({
   const CELL_BASE_SIZE = 20;
 
   return (
-    <div
-      style={{
-        width: "800px",
-        height: "500px",
-        border: "4px solid blue",
-        overflow: "auto",
-        backgroundColor: "#e0f7ff"
-      }}
-    >
+    <div className="garden-grid-inner">
       <div
         style={{
           display: "grid",

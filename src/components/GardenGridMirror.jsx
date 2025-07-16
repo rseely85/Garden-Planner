@@ -18,17 +18,7 @@ export default function GardenGridMirror({ mirrorRows, viewMode }) {
   const groupedItems = getGroupedItems();
 
   return (
-    <div
-      style={{
-        border: "2px solid green",
-        width: "800px",
-        height: "500px",
-        overflow: "auto",
-        padding: "4px",
-        backgroundColor: "#fff",
-        boxSizing: "border-box"
-      }}
-    >
+    <div className="mirror-grid-inner">
       <table style={{ width: "100%", borderCollapse: "collapse", color: "black" }}>
         <thead>
           <tr>

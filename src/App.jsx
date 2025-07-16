@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import GardenGrid from "./components/GardenGrid";
 import GardenGridMirror from "./components/GardenGridMirror";
 import plantsData from "./data/plants.json";
+import './planner-theme.css';
 
 export default function App() {
   const [selectedZone, setSelectedZone] = useState("");
@@ -94,24 +95,12 @@ export default function App() {
         (selectedSoil === "" || p.soil.includes(selectedSoil)))
   );
   return (
-    <div style={{ width: '100vw', minHeight: '100vh', background: '#222', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <header style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 24 }}>
-        <h1 style={{ textAlign: 'center', marginBottom: 8, color: '#fff', fontSize: '2.8rem' }}>
-          Garden Planner <span style={{ fontWeight: 400, fontSize: '0.7em', color: '#ccc' }}>(Beta)</span>
+    <div className="planner-root">
+      <header className="planner-header">
+        <h1 className="planner-title">
+          Garden Planner <span style={{ fontWeight: 400, fontSize: '0.7em', color: '#3AB86F' }}>(Beta)</span>
         </h1>
-        <div
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: 16,
-            maxWidth: 1100,
-            width: '100%',
-            margin: '0 auto',
-            background: 'transparent',
-          }}
-        >
+        <div className="planner-controls">
           <div>
             Width (ft):
             <input
@@ -165,7 +154,6 @@ export default function App() {
                 ))}
               </select>
             </div>
-
             <div>
               Zone:
               <select
@@ -181,7 +169,6 @@ export default function App() {
                 <option value="7b">7b</option>
               </select>
             </div>
-
             <div>
               Light:
               <select
@@ -194,7 +181,6 @@ export default function App() {
                 <option value="shade">Shade</option>
               </select>
             </div>
-
             <div>
               Soil:
               <select
@@ -207,7 +193,6 @@ export default function App() {
                 <option value="clay">Clay</option>
               </select>
             </div>
-            {/* Toggle buttons for GardenGridMirror view mode */}
             <div style={{ marginLeft: "2em", textAlign: "center" }}>
               <label>
                 <input
@@ -242,9 +227,9 @@ export default function App() {
           </div>
         </div>
       </header>
-      <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-        <div style={{ display: 'flex', gap: '2rem', maxWidth: 1200, width: '100%', justifyContent: 'center', alignItems: 'flex-start' }}>
-          <div style={{ flexShrink: 0, minWidth: 0, margin: 0, padding: 0, display: 'flex', justifyContent: 'center' }}>
+      <div className="planner-grids">
+        <div className="garden-grid-outer">
+          <div className="garden-grid-inner">
             <GardenGrid
               width={gridWidthInCells}
               height={gridHeightInCells}
@@ -255,7 +240,9 @@ export default function App() {
               zoom={zoom}
             />
           </div>
-          <div style={{ flexShrink: 0, minWidth: 0, margin: 0, padding: 0, display: 'flex', justifyContent: 'center' }}>
+        </div>
+        <div className="mirror-grid-outer">
+          <div className="mirror-grid-inner">
             <GardenGridMirror mirrorRows={mirrorRows} viewMode={viewMode} />
           </div>
         </div>
