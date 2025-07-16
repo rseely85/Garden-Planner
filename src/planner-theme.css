@@ -1,0 +1,160 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap');
+
+body {
+  background: #FAFAFA;
+  font-family: 'Open Sans', Arial, sans-serif;
+  color: #1A1A1A;
+  margin: 0;
+  padding: 0;
+}
+
+.planner-root {
+  min-height: 100vh;
+  width: 100vw;
+  background: #FAFAFA;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 8px 24px 8px;
+  box-sizing: border-box;
+}
+
+.planner-header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.planner-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1A1A1A;
+  margin-bottom: 10px;
+  letter-spacing: -0.5px;
+}
+
+.planner-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+  background: transparent;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.planner-controls label,
+.planner-controls select,
+.planner-controls input[type="number"],
+.planner-controls input[type="radio"],
+.planner-controls input[type="range"] {
+  font-family: 'Open Sans', Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: #1A1A1A;
+}
+
+.planner-controls select,
+.planner-controls input[type="number"],
+.planner-controls input[type="range"] {
+  border: 1px solid #D0D0D0;
+  border-radius: 4px;
+  padding: 4px 8px;
+  background: #fff;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.planner-controls select:hover,
+.planner-controls input[type="number"]:hover,
+.planner-controls input[type="range"]:hover {
+  color: #111;
+  border-color: #B0B0B0;
+}
+
+.planner-controls label {
+  margin-right: 6px;
+}
+
+.planner-grids {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2rem;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 24px 0 0 0;
+  box-sizing: border-box;
+}
+
+.garden-grid-outer {
+  flex-shrink: 0;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.garden-grid-inner {
+  border: 2px solid #D0D0D0;
+  background: #e0f7ff;
+  width: 800px;
+  height: 500px;
+  overflow: auto;
+  box-sizing: border-box;
+}
+
+.mirror-grid-outer {
+  flex-shrink: 0;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.mirror-grid-inner {
+  border: 2px solid #3AB86F;
+  background: #fff;
+  width: 800px;
+  height: 500px;
+  overflow: auto;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1100px) {
+  .planner-grids {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .garden-grid-inner, .mirror-grid-inner {
+    width: 98vw;
+    max-width: 98vw;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 700px) {
+  .planner-header {
+    padding: 0 8px;
+  }
+  .planner-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .garden-grid-inner, .mirror-grid-inner {
+    width: 100vw;
+    max-width: 100vw;
+    min-width: 0;
+    height: 320px;
+  }
+}
