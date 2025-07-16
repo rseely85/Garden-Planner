@@ -12,9 +12,7 @@ export default function App() {
   const [height, setHeight] = useState(10);
   const [grid, setGrid] = useState([]);
   const [selectedPlant, setSelectedPlant] = useState(plantsData[0]);
-  const [shiftStart, setShiftStart] = useState(null);
   const [zoom, setZoom] = useState(1.0);
-  const [scale, setScale] = useState(12); // default 12"
   const [cellSize, setCellSize] = useState(12); // default to 12"
   const [viewMode, setViewMode] = useState("single"); // "single" or "grouped"
 
@@ -62,19 +60,18 @@ export default function App() {
     row.forEach((cell, c) => {
       if (cell && cell.planted) {
         let plantData = plantsData.find((p) => p.plant === cell.crop);
+        // If Planter Border, override spacing to match cellSize
         let spacing = 12;
-        let qty = 1;
         if (plantData) {
           if (plantData.plant === "Planter Border") {
-            spacing = 6; // always 6" for Planter Border
-            // qty: for each cell, if cellSize is 6" = 1, if 12" = 2
-            qty = cellSize === 12 ? 2 : 1;
+            spacing = cellSize;
           } else {
             spacing = plantData.spacing ? plantData.spacing : 12;
-            const qtyRaw = 1 + cellSize / spacing;
-            qty = qtyRaw > 1.75 ? Math.ceil(qtyRaw) : 1;
           }
         }
+        const qtyRaw = 1 + cellSize / spacing;
+        const qty = qtyRaw > 1.75 ? Math.ceil(qtyRaw) : 1;
+
         mirrorRows.push({
           row: r,
           col: c,
@@ -98,7 +95,7 @@ export default function App() {
   );
   return (
     <div>
-      <h1>Robert's Garden Planner</h1>
+      <h1>Garden Planner <span style={{ fontWeight: 400, fontSize: '0.7em' }}>(Beta)</span></h1>
       <div>
         Width (ft):
         <input
