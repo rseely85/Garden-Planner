@@ -94,148 +94,170 @@ export default function App() {
         (selectedSoil === "" || p.soil.includes(selectedSoil)))
   );
   return (
-    <div>
-      <h1>Garden Planner <span style={{ fontWeight: 400, fontSize: '0.7em' }}>(Beta)</span></h1>
-      <div>
-        Width (ft):
-        <input
-          type="number"
-          value={width}
-          onChange={(e) => setWidth(parseInt(e.target.value) || 0)}
-        />
-        Height (ft):
-        <input
-          type="number"
-          value={height}
-          onChange={(e) => setHeight(parseInt(e.target.value) || 0)}
-        />
-      </div>
-      <div>
-        <label>Cell Size:</label>
-        <label>
-          <input
-            type="radio"
-            value={6}
-            checked={cellSize === 6}
-            onChange={() => setCellSize(6)}
-          />
-          6"
-        </label>
-        <label>
-          <input
-            type="radio"
-            value={12}
-            checked={cellSize === 12}
-            onChange={() => setCellSize(12)}
-          />
-          12"
-        </label>
-      </div>
-      <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-        <div>
-          Select Plant:
-          <select
-            value={selectedPlant.plant}
-            onChange={(e) =>
-              setSelectedPlant(
-                plantsData.find((p) => p.plant === e.target.value)
-              )
-            }
-          >
-            {filteredPlants.map((p) => (
-              <option key={p.plant} value={p.plant}>
-                {p.icon} {p.plant}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          Zone:
-          <select
-            value={selectedZone}
-            onChange={(e) => setSelectedZone(e.target.value)}
-          >
-            <option value="">All</option>
-            <option value="5">5</option>
-            <option value="5b">5b</option>
-            <option value="6">6</option>
-            <option value="6b">6b</option>
-            <option value="7">7</option>
-            <option value="7b">7b</option>
-          </select>
-        </div>
-
-        <div>
-          Light:
-          <select
-            value={selectedLight}
-            onChange={(e) => setSelectedLight(e.target.value)}
-          >
-            <option value="">All</option>
-            <option value="full sun">Full Sun</option>
-            <option value="partial shade">Partial Shade</option>
-            <option value="shade">Shade</option>
-          </select>
-        </div>
-
-        <div>
-          Soil:
-          <select
-            value={selectedSoil}
-            onChange={(e) => setSelectedSoil(e.target.value)}
-          >
-            <option value="">All</option>
-            <option value="loamy">Loamy</option>
-            <option value="sandy">Sandy</option>
-            <option value="clay">Clay</option>
-          </select>
-        </div>
-        {/* Toggle buttons for GardenGridMirror view mode */}
-        <div style={{ marginLeft: "2em", textAlign: "center" }}>
-          <label>
+    <div style={{ width: '100vw', minHeight: '100vh', background: '#222', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <header style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 24 }}>
+        <h1 style={{ textAlign: 'center', marginBottom: 8, color: '#fff', fontSize: '2.8rem' }}>
+          Garden Planner <span style={{ fontWeight: 400, fontSize: '0.7em', color: '#ccc' }}>(Beta)</span>
+        </h1>
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: 16,
+            maxWidth: 1100,
+            width: '100%',
+            margin: '0 auto',
+            background: 'transparent',
+          }}
+        >
+          <div>
+            Width (ft):
             <input
-              type="radio"
-              value="single"
-              checked={viewMode === "single"}
-              onChange={() => setViewMode("single")}
+              type="number"
+              value={width}
+              onChange={(e) => setWidth(parseInt(e.target.value) || 0)}
             />
-            Single Row
-          </label>
-          <label style={{ marginLeft: "1em" }}>
+            Height (ft):
             <input
-              type="radio"
-              value="grouped"
-              checked={viewMode === "grouped"}
-              onChange={() => setViewMode("grouped")}
+              type="number"
+              value={height}
+              onChange={(e) => setHeight(parseInt(e.target.value) || 0)}
             />
-            Grouped
-          </label>
+          </div>
+          <div>
+            <label>Cell Size:</label>
+            <label>
+              <input
+                type="radio"
+                value={6}
+                checked={cellSize === 6}
+                onChange={() => setCellSize(6)}
+              />
+              6"
+            </label>
+            <label>
+              <input
+                type="radio"
+                value={12}
+                checked={cellSize === 12}
+                onChange={() => setCellSize(12)}
+              />
+              12"
+            </label>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+            <div>
+              Select Plant:
+              <select
+                value={selectedPlant.plant}
+                onChange={(e) =>
+                  setSelectedPlant(
+                    plantsData.find((p) => p.plant === e.target.value)
+                  )
+                }
+              >
+                {filteredPlants.map((p) => (
+                  <option key={p.plant} value={p.plant}>
+                    {p.icon} {p.plant}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              Zone:
+              <select
+                value={selectedZone}
+                onChange={(e) => setSelectedZone(e.target.value)}
+              >
+                <option value="">All</option>
+                <option value="5">5</option>
+                <option value="5b">5b</option>
+                <option value="6">6</option>
+                <option value="6b">6b</option>
+                <option value="7">7</option>
+                <option value="7b">7b</option>
+              </select>
+            </div>
+
+            <div>
+              Light:
+              <select
+                value={selectedLight}
+                onChange={(e) => setSelectedLight(e.target.value)}
+              >
+                <option value="">All</option>
+                <option value="full sun">Full Sun</option>
+                <option value="partial shade">Partial Shade</option>
+                <option value="shade">Shade</option>
+              </select>
+            </div>
+
+            <div>
+              Soil:
+              <select
+                value={selectedSoil}
+                onChange={(e) => setSelectedSoil(e.target.value)}
+              >
+                <option value="">All</option>
+                <option value="loamy">Loamy</option>
+                <option value="sandy">Sandy</option>
+                <option value="clay">Clay</option>
+              </select>
+            </div>
+            {/* Toggle buttons for GardenGridMirror view mode */}
+            <div style={{ marginLeft: "2em", textAlign: "center" }}>
+              <label>
+                <input
+                  type="radio"
+                  value="single"
+                  checked={viewMode === "single"}
+                  onChange={() => setViewMode("single")}
+                />
+                Single Row
+              </label>
+              <label style={{ marginLeft: "1em" }}>
+                <input
+                  type="radio"
+                  value="grouped"
+                  checked={viewMode === "grouped"}
+                  onChange={() => setViewMode("grouped")}
+                />
+                Grouped
+              </label>
+            </div>
+          </div>
+          <div>
+            Zoom: {Math.round(zoom * 100)}%{" "}
+            <input
+              type="range"
+              min="0.5"
+              max="2.0"
+              step="0.1"
+              value={zoom}
+              onChange={(e) => setZoom(parseFloat(e.target.value))}
+            />
+          </div>
         </div>
-      </div>
-      <div>
-        Zoom: {Math.round(zoom * 100)}%{" "}
-        <input
-          type="range"
-          min="0.5"
-          max="2.0"
-          step="0.1"
-          value={zoom}
-          onChange={(e) => setZoom(parseFloat(e.target.value))}
-        />
-      </div>
-      <div style={{ display: "flex", gap: "1rem" }}>
-        <GardenGrid
-          width={gridWidthInCells}
-          height={gridHeightInCells}
-          grid={grid}
-          setGrid={setGrid}
-          onCellClick={handleCellClick}
-          cellSize={cellSize}
-          zoom={zoom}
-        />
-        <div>
-          <GardenGridMirror mirrorRows={mirrorRows} viewMode={viewMode} />
+      </header>
+      <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', gap: '2rem', maxWidth: 1200, width: '100%', justifyContent: 'center', alignItems: 'flex-start' }}>
+          <div style={{ flexShrink: 0, minWidth: 0, margin: 0, padding: 0, display: 'flex', justifyContent: 'center' }}>
+            <GardenGrid
+              width={gridWidthInCells}
+              height={gridHeightInCells}
+              grid={grid}
+              setGrid={setGrid}
+              onCellClick={handleCellClick}
+              cellSize={cellSize}
+              zoom={zoom}
+            />
+          </div>
+          <div style={{ flexShrink: 0, minWidth: 0, margin: 0, padding: 0, display: 'flex', justifyContent: 'center' }}>
+            <GardenGridMirror mirrorRows={mirrorRows} viewMode={viewMode} />
+          </div>
         </div>
       </div>
     </div>
