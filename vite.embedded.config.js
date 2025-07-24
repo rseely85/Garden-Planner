@@ -12,11 +12,12 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 5175,
+    open: '/index-embedded.html', // Ensures dev server opens the correct HTML
   },
   build: {
     outDir: 'dist/embed',
     rollupOptions: {
-      input: './index-embedded.html',
+      input: path.resolve(__dirname, 'index-embedded.html'),
     },
   },
 });

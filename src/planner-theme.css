@@ -6,6 +6,40 @@ body {
   color: #1A1A1A;
   margin: 0;
   padding: 0;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+.app-container.embedded {
+  max-width: 100%;
+  width: auto;
+  padding: 1rem;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.app-container.embedded > .compact-wrapper,
+.app-container.embedded .compact-mirror-limit {
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: auto;
+}
+
+body {
+  background: #FAFAFA;
+  font-family: 'Open Sans', Arial, sans-serif;
+  color: #1A1A1A;
+  margin: 0;
+  padding: 0;
 }
 
 .planner-root {
@@ -129,7 +163,7 @@ body {
 }
 
 .compact-wrapper {
-  transform: scale(0.55);
+  transform: scale(0.65  );
   transform-origin: top left;
 }
 
@@ -176,5 +210,17 @@ body {
     max-width: 100vw;
     min-width: 0;
     height: 320px;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-container.embedded {
+    padding: 0.5rem;
+  }
+  .planner-title {
+    font-size: 18px;
+  }
+  .planner-controls {
+    font-size: 14px;
   }
 }

@@ -1,0 +1,8 @@
+[build]
+  command = "vite build --config vite.embedded.config.js"
+  publish = "dist/embed"
+
+[[redirects]]
+  from = "/*"
+  to = "/index-embedded.html"
+  status = 200
