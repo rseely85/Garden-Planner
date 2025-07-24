@@ -1,0 +1,33 @@
+table.mirror-compact {
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+table.mirror-full {
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.mirror-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.mirror-full {
+  max-height: 600px;
+}
+
+.mirror-compact {
+  max-height: 300px;
+}
+
+.mirror-th {
+  padding: 8px 12px;
+  border-bottom: 2px solid #ccc;
+  background: #f8f8f8;
+}
+
+.mirror-td {
+  padding: 6px 10px;
+  border-bottom: 1px solid #eee;
+}
