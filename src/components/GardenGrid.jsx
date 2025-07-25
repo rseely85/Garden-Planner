@@ -1,6 +1,10 @@
 // GardenGridCodeV54
 import React, { useState, useEffect } from "react";
 
+function isGridEmpty(grid) {
+  return grid.length === 0 || grid.every(row => row.every(cell => !cell?.planted));
+}
+
 export default function GardenGrid({
   width,
   height,
@@ -20,7 +24,9 @@ export default function GardenGrid({
       }
       newGrid.push(row);
     }
-    setGrid(newGrid);
+    if (isGridEmpty(grid)) {
+      setGrid(newGrid);
+    }
   }, [width, height]);
 
   const handleClick = (r, c, e) => {
@@ -40,7 +46,14 @@ export default function GardenGrid({
   const CELL_BASE_SIZE = 20;
 
   return (
-    <div className="garden-grid-inner">
+    <div className="garden-grid-inner" style={{
+      height: "auto", // Allow vertical expansion
+      overflowY: "auto", // Enable vertical scrolling if needed
+      flexGrow: 1, // Expand if inside a flexbox
+      border: "2px solid #D0D0D0",
+      background: "#e0f7ff",
+      boxSizing: "border-box"
+    }}>
       <div
         style={{
           display: "grid",

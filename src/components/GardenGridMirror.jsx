@@ -16,9 +16,6 @@ export default function GardenGridMirror({ mirrorRows, viewMode = "grouped", sty
   };
 
   const tableClass = `mirror-table ${styleMode === "compact" ? "mirror-compact" : "mirror-full"}`;
-  console.debug("GardenGridMirror styleMode:", styleMode);
-  console.debug("GardenGridMirror tableClass:", tableClass);
-
   // Restrict to first 4 rows in single+compact mode
   let displayRows = mirrorRows;
   if (viewMode === "single" && styleMode === "compact") {
@@ -26,8 +23,8 @@ export default function GardenGridMirror({ mirrorRows, viewMode = "grouped", sty
   }
 
   return (
-    <div>
-      <div style={{ color: 'red', fontWeight: 'bold' }}>View Mode: {viewMode} | Style Mode: {styleMode}</div>
+    <div className="mirror-wrapper">
+      <div className="mirror-viewmode-label">View Mode: {viewMode}</div>
       <div className="mirror-grid-inner">
         <table className={tableClass}>
           <thead>
@@ -44,23 +41,29 @@ export default function GardenGridMirror({ mirrorRows, viewMode = "grouped", sty
             </tr>
           </thead>
           <tbody>
-            {viewMode === "single"
-              ? displayRows.map((item, idx) => (
-                  <tr key={idx}>
-                    <td className="mirror-td">{item.row}</td>
-                    <td className="mirror-td">{item.col}</td>
-                    <td className="mirror-td">{item.crop}</td>
-                    <td className="mirror-td">{item.icon}</td>
-                    <td className="mirror-td">{item.qty}</td>
-                  </tr>
-                ))
-              : getGroupedItems().map((item, idx) => (
-                  <tr key={idx}>
-                    <td className="mirror-td">{item.crop}</td>
-                    <td className="mirror-td">{item.icon}</td>
-                    <td className="mirror-td">{item.qty}</td>
-                  </tr>
-                ))}
+            {displayRows && displayRows.length > 0 ? (
+              viewMode === "single"
+                ? displayRows.map((row) => (
+                    <tr key={`${row.crop}-${row.row}-${row.col}`}>
+                      <td className="mirror-td">{row.row}</td>
+                      <td className="mirror-td">{row.col}</td>
+                      <td className="mirror-td">{row.crop}</td>
+                      <td className="mirror-td">{row.icon}</td>
+                      <td className="mirror-td">{row.qty}</td>
+                    </tr>
+                  ))
+                : getGroupedItems().map((row, index) => (
+                    <tr key={`${row.crop}-${row.icon}-${row.qty}-${index}`}>
+                      <td className="mirror-td">{row.crop}</td>
+                      <td className="mirror-td">{row.icon}</td>
+                      <td className="mirror-td">{row.qty}</td>
+                    </tr>
+                  ))
+            ) : (
+              <tr>
+                <td className="mirror-no-data" colSpan={viewMode === "single" ? 5 : 3}>No data</td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

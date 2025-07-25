@@ -8,26 +8,72 @@ table.mirror-full {
   line-height: 1.6;
 }
 
-.mirror-table {
-  border-collapse: collapse;
+/* --- Mirror frame matches garden grid frame and alignment --- */
+.mirror-wrapper {
+  /* Outer frame: matches main garden grid container exactly */
   width: 100%;
+  max-width: 810px; /* match main grid width, adjust as needed for pixel parity */
+  margin: 0 auto;
+  padding: 7px 0; /* top/bottom 10px, no extra left/right padding */
+  background: #e0f7ff; /* match garden grid bg */
+  border: 2px solid #999; /* match garden grid outer frame */
+  border-radius: 10px; /* match garden grid radius */
+  box-shadow: 0 0 5px rgba(0,0,0,0.1); /* match garden grid shadow */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-x: hidden; /* prevent horizontal scrollbars */
+  overflow-y: visible; /* only scroll if content overflows vertically */
 }
 
-.mirror-full {
-  max-height: 600px;
+.mirror-grid-inner {
+  /* Inner frame: symmetric horizontal padding, no extra width */
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0 5px; /* symmetric horizontal padding for green border alignment */
+  background: #f9f9f9; /* match grid base */
+  display: block;
+  max-height: 160px; /* Show up to 4 rows, then scroll */
+  overflow-y: auto; /* vertical scroll only if needed */
+  overflow-x: hidden;
+  border-radius: 8px;
 }
 
-.mirror-compact {
-  max-height: 300px;
+.mirror-table {
+  /* Table: fills inner frame, no extra margin or min-width */
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  border-collapse: collapse;
+  table-layout: auto;
+  border: 2px solid green; /* 4-sided green border for table */
+  border-radius: 8px;
+  height: auto;
+}
+
+.mirror-table .mirror-no-data {
+  color: #aaa;
+  text-align: center;
+  padding: 16px 0;
+  line-height: 1.8;
+}
+
+.mirror-table td, .mirror-table th {
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  text-align: center;
+  box-sizing: border-box;
 }
 
 .mirror-th {
-  padding: 8px 12px;
-  border-bottom: 2px solid #ccc;
   background: #f8f8f8;
 }
 
 .mirror-td {
-  padding: 6px 10px;
-  border-bottom: 1px solid #eee;
+  height: 40px; /* Each row is 40px tall for consistent scroll */
 }
+/* --- End mirror frame fixes --- */

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import GardenGrid from "./components/GardenGrid";
 import GardenGridMirror from "./components/GardenGridMirror";
 import plantsData from "./data/plants.json";
@@ -7,16 +7,40 @@ import './planner-theme.css';
 console.debug("Rendering AppEmbedded");
 
 export default function AppEmbedded() {
+  const [grid, setGrid] = useState([]);
   const [selectedZone, setSelectedZone] = useState("");
   const [selectedLight, setSelectedLight] = useState("");
   const [selectedSoil, setSelectedSoil] = useState("");
   const [width, setWidth] = useState(5);
   const [height, setHeight] = useState(10);
-  const [grid, setGrid] = useState([]);
   const [selectedPlant, setSelectedPlant] = useState(plantsData[0]);
   const [zoom, setZoom] = useState(0.8);
   const [cellSize, setCellSize] = useState(12);
   const [viewMode, setViewMode] = useState("single");
+
+  const gridWidthInCells = Math.floor((width * 12) / cellSize);
+  const gridHeightInCells = Math.floor((height * 12) / cellSize);
+
+  useEffect(() => {
+    // Only initialize grid if empty or all cells are unplanted
+    if (
+      grid.length === 0 ||
+      grid.every(row => row.every(cell => !cell?.planted))
+    ) {
+      const newGrid = [];
+      for (let r = 0; r < gridHeightInCells; r++) {
+        const row = [];
+        for (let c = 0; c < gridWidthInCells; c++) {
+          row.push({ planted: false, crop: null, icon: null });
+        }
+        newGrid.push(row);
+      }
+      // Only setGrid if grid is actually different
+      if (JSON.stringify(grid) !== JSON.stringify(newGrid)) {
+        setGrid(newGrid);
+      }
+    }
+  }, [gridWidthInCells, gridHeightInCells]); // Do NOT include grid in deps
 
   const handleCellClick = (r, c, isShift, shiftStart) => {
     let newGrid = [...grid];
@@ -77,8 +101,10 @@ export default function AppEmbedded() {
       }
     });
   });
-  const gridWidthInCells = Math.floor((width * 12) / cellSize);
-  const gridHeightInCells = Math.floor((height * 12) / cellSize);
+
+  console.log("mirrorRows", mirrorRows); // Debug output
+  console.log("grid snapshot", grid); // Optional debug output
+
   const filteredPlants = plantsData.filter(
     (p) =>
       p.plant === "Clear" ||
@@ -87,6 +113,7 @@ export default function AppEmbedded() {
         (selectedLight === "" || p.light.includes(selectedLight)) &&
         (selectedSoil === "" || p.soil.includes(selectedSoil)))
   );
+
   return (
     <div className="app-container embedded">
       <div className="compact-wrapper">
