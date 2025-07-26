@@ -224,3 +224,23 @@ body {
     font-size: 14px;
   }
 }
+/* Spinner fix for number inputs on mobile and iOS */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: inner-spin-button;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+/* Spinner fix for number inputs on mobile and iOS */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: inner-spin-button;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}

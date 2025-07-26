@@ -103,17 +103,27 @@ export default function App() {
         <div className="planner-controls">
           <div>
             Width (ft):
-            <input
-              type="number"
-              value={width}
-              onChange={(e) => setWidth(parseInt(e.target.value) || 0)}
-            />
-            Height (ft):
-            <input
-              type="number"
-              value={height}
-              onChange={(e) => setHeight(parseInt(e.target.value) || 0)}
-            />
+<input
+  type="number"
+  inputMode="numeric"
+  pattern="[0-9]*"
+  value={width.toString().replace(/^0+/, '')}
+  onChange={(e) => {
+    const value = e.target.value.replace(/^0+/, '');
+    setWidth(parseInt(value || '0', 10));
+  }}
+/>
+Height (ft):
+<input
+  type="number"
+  inputMode="numeric"
+  pattern="[0-9]*"
+  value={height.toString().replace(/^0+/, '')}
+  onChange={(e) => {
+    const value = e.target.value.replace(/^0+/, '');
+    setHeight(parseInt(value || '0', 10));
+  }}
+/>
           </div>
           <div>
             <label>Cell Size:</label>
