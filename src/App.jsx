@@ -102,6 +102,7 @@ export default function App() {
         </h1>
         <div className="planner-controls">
           <div>
+            <div className="version-tag">Build: v1.0.2 — July 26</div>
             Width (ft):
 <input
   type="number"
