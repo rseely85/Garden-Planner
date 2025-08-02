@@ -1,3 +1,6 @@
+/* ----------------------------
+   1. Global Styles
+---------------------------- */
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap');
 
 body {
@@ -9,41 +12,11 @@ body {
   overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
-.app-container.embedded {
-  max-width: 100%;
-  width: auto;
-  padding: 1rem;
-  box-sizing: border-box;
-  overflow-x: hidden;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-}
-
-.app-container.embedded > .compact-wrapper,
-.app-container.embedded .compact-mirror-limit {
-  margin-left: auto;
-  margin-right: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  max-width: 100vw;
-  overflow-x: auto;
-}
-
-body {
-  background: #FAFAFA;
-  font-family: 'Open Sans', Arial, sans-serif;
-  color: #1A1A1A;
-  margin: 0;
-  padding: 0;
-}
-
+/* ----------------------------
+   2. App Container (General)
+---------------------------- */
 .planner-root {
-  min-height: 100vh;
+  min-height: 100vh; /* Fullscreen mode default */
   width: 100vw;
   background: #FAFAFA;
   display: flex;
@@ -115,6 +88,9 @@ body {
   margin-right: 6px;
 }
 
+/* ----------------------------
+   3. Planner Grids
+---------------------------- */
 .planner-grids {
   display: flex;
   justify-content: center;
@@ -162,8 +138,11 @@ body {
   box-sizing: border-box;
 }
 
+/* ----------------------------
+   4. Compact & Embedded Elements
+---------------------------- */
 .compact-wrapper {
-  transform: scale(0.60  );
+  transform: scale(0.60);
   transform-origin: top left;
 }
 
@@ -183,6 +162,19 @@ body {
   justify-content: center;
 }
 
+/* ----------------------------
+   5. Utility
+---------------------------- */
+.version-tag {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 12px;
+  font-style: italic;
+}
+
+/* ----------------------------
+   6. Media Queries
+---------------------------- */
 @media (max-width: 1100px) {
   .planner-grids {
     flex-direction: column;
@@ -224,29 +216,90 @@ body {
     font-size: 14px;
   }
 }
-/* Spinner fix for number inputs on mobile and iOS */
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-  -webkit-appearance: inner-spin-button;
-  margin: 0;
+
+@media (max-width: 1024px) {
+  .planner-root {
+    transform: scale(0.85);
+    transform-origin: top center;
+  }
+  .garden-grid-inner,
+  .mirror-grid-inner {
+    width: 95vw;
+    max-width: 95vw;
+  }
+  .planner-controls {
+    flex-direction: column;
+    gap: 12px;
+  }
 }
 
-input[type="number"] {
-  -moz-appearance: textfield;
-}
-/* Spinner fix for number inputs on mobile and iOS */
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-  -webkit-appearance: inner-spin-button;
-  margin: 0;
+/* ----------------------------
+   7. Embedded Mode Overrides
+---------------------------- */
+.app-container.embedded {
+  max-width: 100%;
+  width: auto;
+  padding: 1rem;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  overflow-y: hidden !important; /* [SCROLL FIX] Prevent vertical scroll of the embedded iframe */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: auto;
+  max-height: 100%; /* [SCROLL FIX] Prevent browser from reserving extra space */
 }
 
-input[type="number"] {
-  -moz-appearance: textfield;
+.app-container.embedded .planner-root {
+  min-height: auto;
+  height: auto;
+  max-height: 100%;         /* [SCROLL FIX] Expand naturally, but never create scrollbars */
+  overflow-y: visible;      /* [SCROLL FIX] No scrollbars, no clipping */
+  overflow-x: visible;
+  padding: 0;
 }
-.version-tag {
-  font-size: 12px;
-  color: #888;
-  margin-bottom: 12px;
-  font-style: italic;
+
+.app-container.embedded .planner-grids {
+  padding: 0;
+  margin: 0 auto;
 }
+
+.app-container.embedded > .compact-wrapper {
+  /* [SCROLL FIX] Dynamically match scaled height */
+  height: 1000px;  /* calculated scaled height */
+  max-height: none;
+  overflow: hidden; /* Prevent browser from reserving extra scroll space */
+  transform: scale(0.60);
+  transform-origin: top left;
+}
+
+.app-container.embedded .compact-mirror-limit {
+  overflow-y: auto;     /* Only this container scrolls vertically */
+  max-height: 200px;
+}
+
+.garden-grid-inner,
+.mirror-grid-inner {
+  overflow-x: auto;     /* Allow horizontal scroll if content is wide */
+  overflow-y: visible !important; /* No vertical scroll */
+}
+/* FINAL SCROLL LOCK FOR EMBEDDED */
+body {
+  overflow-y: hidden !important;  /* stop vertical scroll */
+  height: 100% !important;        /* match iframe height */
+}
+
+.app-container.embedded {
+  height: 1000px !important;      /* full visible height you confirmed */
+  overflow-y: hidden !important;  /* no vertical scroll */
+}
+
+/*
+  [SCROLL FIX SUMMARY]
+  - .app-container.embedded: never scrolls vertically (iframe can't scroll)
+  - .compact-wrapper: dynamic height based on scale, prevents browser reserving extra space
+  - .planner-root: expands naturally, no scrollbars or clipping
+  - .compact-mirror-limit: only vertical scroll, max-height 200px
+  - .garden-grid-inner, .mirror-grid-inner: only horizontal scroll
+*/
