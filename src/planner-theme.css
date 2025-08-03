@@ -189,6 +189,12 @@ body {
     max-width: 100% !important;
   }
 
+  /* Title sizing for tablets (iPad, etc.) */
+  .planner-title {
+    font-size: 20px;            /* Reduce size so it fits */
+    text-align: center;         /* Ensure centered on smaller screens */
+  }
+}
   /* Planner inside iframe */
   .app-container.embedded > .compact-wrapper {
     transform: scale(0.55);     /* Slightly smaller for iPad fit */
@@ -211,7 +217,7 @@ body {
     flex-direction: column;
     gap: 12px;
   }
-}
+
 
 /* -------- SMALL TABLET & LARGE PHONE -------- */
 @media (max-width: 768px) {
