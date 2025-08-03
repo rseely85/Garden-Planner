@@ -191,7 +191,7 @@ body {
 
   /* Title sizing for tablets (iPad, etc.) */
   .planner-title {
-    font-size: 20px;            /* Reduce size so it fits */
+    font-size: 16px;            /* Reduce size so it fits */
     text-align: center;         /* Ensure centered on smaller screens */
   }
 }
