@@ -14,10 +14,10 @@ export default defineConfig({
     port: 5174,
   },
   base: './',
-  build: {
-    outDir: 'dist/full',
-    rollupOptions: {
-      input: './index-full.html',
-    },
-  },
+ build: {
+  outDir: 'dist/full',
+  rollupOptions: {
+    input: './index.html'
+  }
+}
 });
