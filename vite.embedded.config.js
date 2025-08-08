@@ -14,6 +14,7 @@ export default defineConfig({
     port: 5175,
     open: '/index-embedded.html', // Ensures dev server opens the correct HTML
   },
+  base: './',
   build: {
     outDir: 'dist/embed',
     rollupOptions: {

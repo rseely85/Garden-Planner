@@ -6,12 +6,8 @@
 "scripts": {
   "dev": "vite",
   "build": "vite build",
-  "lint": "eslint .",
-  "preview": "vite preview",
-  "dev:embed": "vite --config vite.embedded.config.js",
-  "build:embed": "vite build --config vite.embedded.config.js",
-  "dev:full": "vite --config vite.full.config.js",
-  "build:full": "vite build --config vite.full.config.js"
+  "build:embed": "vite build --config vite.embedded.config.js && cp dist/embed/index-embedded.html dist/embed/index.html",
+  "build:full": "vite build --config vite.full.config.js && cp dist/full/index-full.html dist/full/index.html"
 },
   "dependencies": {
     "react": "^19.1.0",
