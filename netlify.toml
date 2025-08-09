@@ -1,3 +1,0 @@
-[build]
-  command = "vite build --config vite.full.config.js"
-  publish = "dist/full"
