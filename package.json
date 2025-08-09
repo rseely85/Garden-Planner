@@ -3,12 +3,12 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-"scripts": {
-  "dev": "vite",
-  "build": "vite build",
-  "build:embed": "vite build --config vite.embedded.config.js && cp dist/embed/index-embedded.html dist/embed/index.html",
-  "build:full": "vite build --config vite.full.config.js && cp dist/full/index-full.html dist/full/index.html"
-},
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:embed": "vite build --config vite.embedded.config.js && cp dist/embed/index-embedded.html dist/embed/index.html",
+    "build:full": "vite build --config vite.full.config.js && cp dist/full/index-full.html dist/full/index.html"
+  },
   "dependencies": {
     "react": "^19.1.0",
     "react-dom": "^19.1.0"

@@ -12,12 +12,13 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 5174,
+    open: '/index-full.html', // open the correct file in dev
   },
   base: './',
- build: {
-  outDir: 'dist/full',
-  rollupOptions: {
-    input: './index.html'
-  }
-}
+  build: {
+    outDir: 'dist/full',
+    rollupOptions: {
+      input: path.resolve(__dirname, 'index-full.html'), // <-- IMPORTANT
+    },
+  },
 });
