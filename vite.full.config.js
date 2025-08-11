@@ -7,18 +7,28 @@ import { dirname } from 'path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
+// Toggle relative paths ONLY for local preview
+const isLocalPreview = process.env.LOCAL_PREVIEW === 'true';
+
 export default defineConfig({
   root: path.resolve(__dirname),
   plugins: [react()],
   server: {
     port: 5174,
-    open: '/index-full.html', // open the correct file in dev
+    open: '/index.html',
   },
-  base: './',
+  base: isLocalPreview ? './' : '/',
   build: {
     outDir: 'dist/full',
     rollupOptions: {
-      input: path.resolve(__dirname, 'index-full.html'), // <-- IMPORTANT
+      input: {
+        main: path.resolve(__dirname, 'index.html'),
+      },
+      output: {
+        entryFileNames: 'assets/index-full.js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash][extname]'
+      }
     },
   },
 });

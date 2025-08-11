@@ -6,8 +6,12 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "build:embed": "vite build --config vite.embedded.config.js && cp dist/embed/index-embedded.html dist/embed/index.html",
-    "build:full": "vite build --config vite.full.config.js && cp dist/full/index-full.html dist/full/index.html"
+
+    "build:embed": "vite build --config vite.embedded.config.js",
+    "build:full": "vite build --config vite.full.config.js",
+
+    "preview:embed": "LOCAL_PREVIEW=true npm run build:embed && npx serve dist/embed -l 3000",
+    "preview:full": "LOCAL_PREVIEW=true npm run build:full && npx serve dist/full -l 3001"
   },
   "dependencies": {
     "react": "^19.1.0",
