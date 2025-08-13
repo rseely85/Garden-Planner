@@ -1,6 +1,5 @@
-// src/main-full.jsx
+import React from "react";
 import { createRoot } from "react-dom/client";
-import AppFull from "./AppFull.jsx";
+import AppFull from "./AppFull";
 
-const rootEl = document.getElementById("root");
-createRoot(rootEl).render(<AppFull />);
+createRoot(document.getElementById('root')).render(<AppFull />);

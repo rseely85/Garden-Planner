@@ -1,44 +1,29 @@
 /* ----------------------------
-   1) Global
+   1. Global Styles
 ---------------------------- */
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap');
-
-:root{
-  --planner-max: 1200px;   /* cap for shells (full can override) */
-  --planner-pad: 16px;
-  --panel-gap: 16px;
-
-  /* canvas sizing (used by compact-wrapper when needed) */
-  --planner-width: 1200px;
-  --planner-height: 1000px;
-}
-
-* { box-sizing: border-box; }
-
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-}
 
 body {
   background: #FAFAFA;
   font-family: 'Open Sans', Arial, sans-serif;
   color: #1A1A1A;
-  overflow-x: hidden; /* stop side-scroll page-wide */
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
 /* ----------------------------
-   2) Top-level App Layout
+   2. App Container (General)
 ---------------------------- */
 .planner-root {
-  min-height: 100vh;
+  min-height: 100vh; /* Fullscreen mode default */
   width: 100vw;
   background: #FAFAFA;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 32px 8px 24px 8px;
+  box-sizing: border-box;
 }
 
 .planner-header {
@@ -99,10 +84,12 @@ body {
   border-color: #B0B0B0;
 }
 
-.planner-controls label { margin-right: 6px; }
+.planner-controls label {
+  margin-right: 6px;
+}
 
 /* ----------------------------
-   3) Grids / Canvases
+   3. Planner Grids
 ---------------------------- */
 .planner-grids {
   display: flex;
@@ -112,7 +99,8 @@ body {
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
-  padding-top: 24px;
+  padding: 24px 0 0 0;
+  box-sizing: border-box;
 }
 
 .garden-grid-outer {
@@ -127,15 +115,15 @@ body {
 .garden-grid-inner {
   border: 2px solid #D0D0D0;
   background: #e0f7ff;
-  width: 800px;          /* logical content width */
+  width: 800px;
   height: 500px;
-  max-width: 100%;
   overflow: auto;
+  box-sizing: border-box;
 }
 
 .mirror-grid-outer {
   width: 800px;
-  max-width: 100%;
+  max-width: 100vw;
   display: flex;
   justify-content: center;
 }
@@ -144,18 +132,17 @@ body {
   border: 2px solid #3AB86F;
   background: #fff;
   width: 800px;
+  max-width: 100vw;
   height: 500px;
-  max-width: 100%;
   overflow: auto;
+  box-sizing: border-box;
 }
 
 /* ----------------------------
-   4) Compact / Embedded helpers
+   4. Compact & Embedded Elements
 ---------------------------- */
 .compact-wrapper {
-  /* When used in embedded we’ll scale or keep natural size based on breakpoint */
-  width: var(--planner-width);
-  height: var(--planner-height);
+  transform: scale(0.60);
   transform-origin: top left;
 }
 
@@ -170,13 +157,13 @@ body {
   overflow-y: auto;
   margin: 0 auto;
   width: 800px;
-  max-width: 100%;
+  max-width: 100vw;
   display: flex;
   justify-content: center;
 }
 
 /* ----------------------------
-   5) Utility
+   5. Utility
 ---------------------------- */
 .version-tag {
   font-size: 12px;
@@ -186,129 +173,167 @@ body {
 }
 
 /* ----------------------------
-   6) Responsive – Fullscreen (NOT embedded)
+   6. Media Queries
 ---------------------------- */
+/* -------- TABLET & IPAD FIX -------- */
 @media (max-width: 1024px) {
-  :not(.app-container.embedded) .planner-title {
-    font-size: 18px;
-    text-align: center;
+  /* Webflow embed container */
+  .planner-embed {
+    width: 100% !important;     /* Full width container */
+    max-width: 100% !important;
+    margin: 0 auto;             /* Center it */
   }
-  :not(.app-container.embedded) .planner-controls {
-    flex-direction: column;
-    gap: 12px;
+
+  iframe {
+    width: 100% !important;     /* Force iframe to fill container */
+    max-width: 100% !important;
   }
-  :not(.app-container.embedded) .garden-grid-inner,
-  :not(.app-container.embedded) .mirror-grid-inner {
+
+  /* Title sizing for tablets (iPad, etc.) */
+  .planner-title {
+    font-size: 8px;            /* Reduce size so it fits */
+    text-align: center;         /* Ensure centered on smaller screens */
+  }
+}
+  /* Planner inside iframe */
+  .app-container.embedded > .compact-wrapper {
+    transform: scale(0.55);     /* Slightly smaller for iPad fit */
+    transform-origin: top center;
+    height: 1000px;             /* Keep full screen height */
+  }
+
+  .planner-root {
+    transform: scale(0.85);     /* Adjust main scale */
+    transform-origin: top center;
+  }
+
+  .garden-grid-inner,
+  .mirror-grid-inner {
     width: 95vw;
     max-width: 95vw;
   }
-}
 
+  .planner-controls {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+
+/* -------- SMALL TABLET & LARGE PHONE -------- */
 @media (max-width: 768px) {
-  :not(.app-container.embedded) .planner-controls {
+  .app-container.embedded {
+    padding: 0.5rem;
+  }
+
+  .planner-title {
+    font-size: 16px;
+  }
+
+  .planner-controls {
     font-size: 14px;
     flex-direction: column;
     align-items: stretch;
     gap: 10px;
   }
-  :not(.app-container.embedded) .garden-grid-inner,
-  :not(.app-container.embedded) .mirror-grid-inner {
+
+  .garden-grid-inner,
+  .mirror-grid-inner {
     width: 100vw;
     max-width: 100vw;
     height: 320px;
   }
 }
 
+/* -------- PHONE (PORTRAIT) -------- */
 @media (max-width: 700px) {
-  :not(.app-container.embedded) .planner-header { padding: 0 8px; }
-  :not(.app-container.embedded) .planner-title { font-size: 16px; }
-  :not(.app-container.embedded) .garden-grid-inner,
-  :not(.app-container.embedded) .mirror-grid-inner {
+  .planner-header {
+    padding: 0 8px;
+  }
+
+  .planner-title {
+    font-size: 16px;
+  }
+
+  .planner-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .garden-grid-inner,
+  .mirror-grid-inner {
     width: 100vw;
     max-width: 100vw;
-    height: 280px;
+    height: 280px;  /* Shorter to fit on phone screens */
   }
 }
-
 /* ----------------------------
-   7) Embedded Mode (scroll-safe, no page jiggle)
+   7. Embedded Mode Overrides
 ---------------------------- */
 .app-container.embedded {
-  /* Lock scrolling at the iframe level */
+  max-width: 100%;
+  width: auto;
+  padding: 1rem;
+  box-sizing: border-box;
   overflow-x: hidden;
-  overflow-y: hidden;
-  /* Center content without adding extra padding that causes jiggle */
-  padding: 0;
-  margin: 0 auto;
-  width: 100vw;
-  max-width: 100vw;
+  overflow-y: hidden !important; /* [SCROLL FIX] Prevent vertical scroll of the embedded iframe */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: auto;
+  max-height: 100%; /* [SCROLL FIX] Prevent browser from reserving extra space */
 }
 
 .app-container.embedded .planner-root {
   min-height: auto;
   height: auto;
+  max-height: 100%;         /* [SCROLL FIX] Expand naturally, but never create scrollbars */
+  overflow-y: visible;      /* [SCROLL FIX] No scrollbars, no clipping */
+  overflow-x: visible;
   padding: 0;
 }
 
 .app-container.embedded .planner-grids {
-  /* Keep the two canvases centered; allow their own internal scroll */
   padding: 0;
   margin: 0 auto;
-  gap: 24px;
 }
 
-/* Key: scale compact-wrapper to show full app in ~1000px without outer scroll */
 .app-container.embedded > .compact-wrapper {
-  transform: scale(0.60);       /* confirmed sweet spot */
-  height: 1000px;               /* full visible height you tested */
-  overflow: hidden;             /* no extra space reserve */
+  /* [SCROLL FIX] Dynamically match scaled height */
+  height: 1000px;  /* calculated scaled height */
+  max-height: none;
+  overflow: hidden; /* Prevent browser from reserving extra scroll space */
+  transform: scale(0.60);
+  transform-origin: top left;
 }
 
-/* Only the mirror list may scroll vertically */
 .app-container.embedded .compact-mirror-limit {
+  overflow-y: auto;     /* Only this container scrolls vertically */
   max-height: 200px;
-  overflow-y: auto;
 }
 
-/* Let grids scroll horizontally when needed, not the whole page */
-.app-container.embedded .garden-grid-inner,
-.app-container.embedded .mirror-grid-inner {
-  width: 800px;
-  max-width: 100%;
-  height: 500px;
-  overflow-x: auto;
-  overflow-y: auto; /* grid internals can scroll as needed */
+.garden-grid-inner,
+.mirror-grid-inner {
+  overflow-x: auto;     /* Allow horizontal scroll if content is wide */
+  overflow-y: visible !important; /* No vertical scroll */
+}
+/* FINAL SCROLL LOCK FOR EMBEDDED */
+body {
+  overflow-y: hidden !important;  /* stop vertical scroll */
+  height: 100% !important;        /* match iframe height */
 }
 
-/* ----------------------------
-   8) Extra responsive polish for Embedded
----------------------------- */
-@media (max-width: 1024px) {
-  .app-container.embedded > .compact-wrapper {
-    transform: scale(0.55);
-    height: 900px;
-    transform-origin: top center;
-  }
+.app-container.embedded {
+  height: 1000px !important;      /* full visible height you confirmed */
+  overflow-y: hidden !important;  /* no vertical scroll */
 }
 
-@media (max-width: 768px) {
-  .app-container.embedded > .compact-wrapper {
-    transform: scale(0.50);
-    height: 700px;
-  }
-  .app-container.embedded .garden-grid-inner,
-  .app-container.embedded .mirror-grid-inner {
-    height: 320px;
-  }
-}
-
-@media (max-width: 700px) {
-  .app-container.embedded > .compact-wrapper {
-    transform: scale(0.45);
-    height: 600px;
-  }
-  .app-container.embedded .garden-grid-inner,
-  .app-container.embedded .mirror-grid-inner {
-    height: 280px;
-  }
-}
+/*
+  [SCROLL FIX SUMMARY]
+  - .app-container.embedded: never scrolls vertically (iframe can't scroll)
+  - .compact-wrapper: dynamic height based on scale, prevents browser reserving extra space
+  - .planner-root: expands naturally, no scrollbars or clipping
+  - .compact-mirror-limit: only vertical scroll, max-height 200px
+  - .garden-grid-inner, .mirror-grid-inner: only horizontal scroll
+*/
