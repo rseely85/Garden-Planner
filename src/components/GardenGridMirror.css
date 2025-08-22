@@ -77,3 +77,29 @@ table.mirror-full {
   height: 40px; /* Each row is 40px tall for consistent scroll */
 }
 /* --- End mirror frame fixes --- */
+
+.garden-grid-outer {
+  width: 800px !important;
+  height: 500px !important;
+  max-width: 800px !important;
+  max-height: 500px !important;
+  min-width: 800px !important;
+  min-height: 500px !important;
+  box-sizing: border-box;
+  overflow: auto;
+  margin: 0 auto;
+  border-radius: 10px;
+  background: #e0f7ff;
+  border: 2px solid #D0D0D0;
+}
+
+.garden-grid-inner {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  min-width: 100% !important;
+  min-height: 100% !important;
+  box-sizing: border-box;
+  overflow: auto;
+}

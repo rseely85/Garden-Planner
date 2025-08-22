@@ -184,19 +184,17 @@ export default function AppFull() {
           </div>
         </div>
       </header>
-      <div className="planner-grids">
-        <div className="garden-grid-outer">
-          <div className="garden-grid-inner">
-            <GardenGrid
-              width={gridWidthInCells}
-              height={gridHeightInCells}
-              grid={grid}
-              setGrid={setGrid}
-              onCellClick={handleCellClick}
-              cellSize={cellSize}
-              zoom={zoom}
-            />
-          </div>
+      <div className="planner-grids" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+        <div className="garden-grid-outer" style={{ marginBottom: '24px' }}>
+          <GardenGrid
+            width={gridWidthInCells}
+            height={gridHeightInCells}
+            grid={grid}
+            setGrid={setGrid}
+            onCellClick={handleCellClick}
+            cellSize={cellSize}
+            zoom={zoom}
+          />
         </div>
         <div className="mirror-grid-outer">
           <GardenGridMirror
